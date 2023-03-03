@@ -11,62 +11,63 @@ import javax.swing.JPanel;
 
 public class TetrisView extends JPanel {
 
-    // instance variables
-
+  // instance variables
     private final ViewableTetrisModel VModel;
 
-    private final ColorTheme Theme;
+    private final ColorTheme setColor;
 
     private static final double OUTERMARGIN = 15;
     private static final double GRIDMARGIN = 2;
 
-    // Constructor
+    private static final int s = 30; // cell lengths
+    private static final int m = 5; // margin
+
+  // Constructor
   public TetrisView(ViewableTetrisModel VModel) {
     this.setFocusable(true);
-    this.setPreferredSize(new Dimension(300, 400));
     this.VModel = VModel;
-    this.Theme = new DefaultColorTheme();
-    this.setBackground(this.Theme.getBackgroundColor());
+    // calculating preferred grid size
+    int columns = this.VModel.getDimension().cols();
+    int rows = this.VModel.getDimension().rows();
+    int preferredWidth = (int) ((s + m)*columns + m + OUTERMARGIN);
+    int preferredHeight = (int) ((s + m)*rows + m + OUTERMARGIN);
+
+    this.setPreferredSize(new Dimension(preferredWidth, preferredHeight));
+    this.setColor = new DefaultColorTheme();
+    this.setBackground(this.setColor.getBackgroundColor());
   }
   
-  // The paintComponent method is called by the Java Swing framework every time
-  // either the window opens or resizes, or we call .repaint() on this object. 
-  // Note: NEVER call paintComponent directly yourself
   @Override
-  public void paintComponent(Graphics g) {
-    super.paintComponent(g);
-    Graphics2D g2 = (Graphics2D) g;
+  public void paintComponent(Graphics GraphComp) {
+    super.paintComponent(GraphComp);
+    Graphics2D Comp2D = (Graphics2D) GraphComp;
 
-    // draw everything
-    drawGame(g2);
+    drawGame(Comp2D);
     
   }
 
-  private void drawGame(Graphics2D Canva) {
-
-    
+  // methods drawGame and drawCells used similar solutions from lab 4
+  // NB: remember to write javadocs (/*  */) to describe methods that isn't private and/or are not 
+  // borrowed from other classes or interfaces.
+  private void drawGame(Graphics2D Canvas) {
     double x = OUTERMARGIN;
     double y = OUTERMARGIN;
     double width = this.getWidth() - 2 * OUTERMARGIN;
     double height = this.getHeight() - 2 * OUTERMARGIN;
 
-    Rectangle2D drawRect = new Rectangle2D.Double(x, y, width, height);
+    Rectangle2D drawRectangle = new Rectangle2D.Double(x, y, width, height);
 
-    CellPositionToPixelConverter Convert = new CellPositionToPixelConverter(drawRect, VModel.getDimension(), GRIDMARGIN);
+    CellPositionToPixelConverter Convert = new CellPositionToPixelConverter(drawRectangle, VModel.getDimension(), GRIDMARGIN);
     
-    drawCells(Canva, VModel.getTilesOnBoard(), Convert, this.Theme);
-
-
+    drawCells(Canvas, VModel.getTilesOnBoard(), Convert, this.setColor);
   }  
 
-  private static void drawCells(Graphics2D Canvas, Iterable<GridCell<Character>> Cells, CellPositionToPixelConverter Converter, ColorTheme C) {
-    
+  private static void drawCells(Graphics2D Canvas, Iterable<GridCell<Character>> Cells, CellPositionToPixelConverter Converter, ColorTheme newColor) {
     for (GridCell<Character> GridChar : Cells) {
-      Rectangle2D Rect = Converter.getBoundsForCell(GridChar.pos());
-      // if statement to check for illegal args?
-      Canvas.setColor(C.getCellColor(GridChar.value()));
-      Canvas.fill(Rect);
-
+      Rectangle2D newRectangle = Converter.getBoundsForCell(GridChar.pos());
+      
+      Canvas.setColor(newColor.getCellColor(GridChar.value()));
+      Canvas.fill(newRectangle);
     }
 
   }

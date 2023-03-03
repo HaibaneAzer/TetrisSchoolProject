@@ -6,26 +6,31 @@ import no.uib.inf101.grid.GridDimension;
 import no.uib.inf101.grid.CellPosition;
 
 public class CellPositionToPixelConverter {
-  // instansvariabler
+  // instance variables
   Rectangle2D box;
-  GridDimension gd;
+  GridDimension gridDim;
   double Margin;
-
-  public CellPositionToPixelConverter(Rectangle2D box, GridDimension gd, double Margin) {
+  
+  public CellPositionToPixelConverter(Rectangle2D box, GridDimension gridDim, double Margin) {
     this.box = box;
-    this.gd = gd;
+    this.gridDim = gridDim;
     this.Margin = Margin;
   }
-
-  Rectangle2D getBoundsForCell(CellPosition cp) {
+  /** 
+  * getBoundsForCell is a method which uses CellPosition values to create a grid with 
+  * unifromly distributed cells. 
+  * Method has only parameters of type CellPosition and returns values of type Rectangle2D.
+  * @param cellPos 
+  */
+  public Rectangle2D getBoundsForCell(CellPosition cellPos) {
 
     // cell dimensions
-    double cellWidth = (box.getWidth() - (gd.cols() + 1)*Margin)/gd.cols();
-    double cellHeight = (box.getHeight() - (gd.rows() + 1)*Margin)/gd.rows();
+    double cellWidth = (box.getWidth() - (gridDim.cols() + 1)*Margin)/gridDim.cols();
+    double cellHeight = (box.getHeight() - (gridDim.rows() + 1)*Margin)/gridDim.rows();
 
     // cell position
-    double cellX = box.getX() + (cp.col() + 1)*Margin + cp.col()*cellWidth;
-    double cellY = box.getY() + (cp.row() + 1)*Margin + cp.row()*cellHeight;
+    double cellX = box.getX() + (cellPos.col() + 1)*Margin + cellPos.col()*cellWidth;
+    double cellY = box.getY() + (cellPos.row() + 1)*Margin + cellPos.row()*cellHeight;
 
     Rectangle2D CellBounds = new Rectangle2D.Double(cellX, cellY, cellWidth, cellHeight);
 

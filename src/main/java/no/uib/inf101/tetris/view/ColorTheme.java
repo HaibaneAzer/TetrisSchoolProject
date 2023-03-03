@@ -5,9 +5,9 @@ import java.awt.Color;
 public interface ColorTheme {
     
 /**
- * getCellColor har parameter char og returnerer verdier av typen Color.
+ * getCellColor has one parameter of type Character and returns values of type Color.
+ * Returned values cannot be "null" 
  * @param Char
- * return verdi kan ikke være null.
  */
     Color getCellColor(Character Char);
 
