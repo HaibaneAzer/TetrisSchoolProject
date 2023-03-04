@@ -59,7 +59,10 @@ public class TetrisView extends JPanel {
 
     CellPositionToPixelConverter Convert = new CellPositionToPixelConverter(drawRectangle, VModel.getDimension(), GRIDMARGIN);
     
+    // draw tetris background
     drawCells(Canvas, VModel.getTilesOnBoard(), Convert, this.setColor);
+    // draw tetrominos
+    drawCells(Canvas, VModel.getTetroTiles(), Convert, this.setColor);
   }  
 
   private static void drawCells(Graphics2D Canvas, Iterable<GridCell<Character>> Cells, CellPositionToPixelConverter Converter, ColorTheme newColor) {

@@ -20,6 +20,11 @@ public interface ViewableTetrisModel {
     Iterable<GridCell<Character>> getTilesOnBoard();
 
 
-
-    
+    /**
+     * getTetroTIles returns an object, which when it's
+     * being iterated over, gets all positions on the board
+     * where tetromino-objects exists.
+     * 
+     */
+    Iterable<GridCell<Character>> getTetroTiles();
 }
