@@ -13,7 +13,7 @@ public class DefaultColorTheme implements ColorTheme {
             case 'y' -> Color.YELLOW;
             case 'm' -> Color.MAGENTA;
             case '-' -> Color.BLACK;
-            // tetrominos
+            // tetromino colors
             case 'L' -> Color.ORANGE;
             case 'J' -> Color.BLUE.darker();
             case 'S' -> Color.GREEN;

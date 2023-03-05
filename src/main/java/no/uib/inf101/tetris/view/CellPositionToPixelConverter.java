@@ -20,7 +20,8 @@ public class CellPositionToPixelConverter {
   * getBoundsForCell is a method which uses CellPosition values to create a grid with 
   * unifromly distributed cells. 
   * Method has only parameters of type CellPosition and returns values of type Rectangle2D.
-  * @param cellPos 
+  * @param cellPos position of cell
+  * @return Rectangle2D-object
   */
   public Rectangle2D getBoundsForCell(CellPosition cellPos) {
 

@@ -76,14 +76,21 @@ public class TestTetromino {
     public void tetrominoDisplacement() {
         //
         Tetromino tetro = Tetromino.newTetromino('S');
+        tetro = tetro.shiftedBy(0, 10);
+        tetro = tetro.shiftedBy(0, 10);
+
+        // Collect which objects are iterated through
+        List<GridCell<Character>> objs = new ArrayList<>();
+        for (GridCell<Character> gc : tetro) {
+            objs.add(gc);
+        }
 
         // Check if tetro was displaced, then check if displacement is doubled on repeated shift.
-        tetro = tetro.shiftedBy(0, 10).shiftedBy(0, 10);
-        assertEquals(20, tetro.Pos.col());
-        assertEquals(0, tetro.Pos.row());
-        tetro = tetro.shiftedBy(0, -20);
-        assertEquals(0, tetro.Pos.col());
-        assertEquals(0, tetro.Pos.row());
+        assertEquals(4, objs.size());
+        assertTrue(objs.contains(new GridCell<>(new CellPosition(2, 20), 'S')));
+        assertTrue(objs.contains(new GridCell<>(new CellPosition(1, 21), 'S')));
+        assertTrue(objs.contains(new GridCell<>(new CellPosition(1, 22), 'S')));
+        assertTrue(objs.contains(new GridCell<>(new CellPosition(2, 21), 'S')));
 }
 
     @Test 
@@ -108,13 +115,13 @@ public class TestTetromino {
             objs2.add(gc);
         }
         //
-        assertEquals(new CellPosition(-1, 4), tetro1.Pos);
+        
         assertTrue(objs1.contains(new GridCell<>(new CellPosition(0, 5), 'S')));
         assertTrue(objs1.contains(new GridCell<>(new CellPosition(0, 6), 'S')));
         assertTrue(objs1.contains(new GridCell<>(new CellPosition(1, 4), 'S')));
         assertTrue(objs1.contains(new GridCell<>(new CellPosition(1, 5), 'S')));
         //
-        assertEquals(new CellPosition(-1, 3), tetro2.Pos);
+        
         assertTrue(objs2.contains(new GridCell<>(new CellPosition(0, 4), 'O')));
         assertTrue(objs2.contains(new GridCell<>(new CellPosition(0, 5), 'O')));
         assertTrue(objs2.contains(new GridCell<>(new CellPosition(1, 5), 'O')));

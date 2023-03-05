@@ -16,7 +16,7 @@ public final class Tetromino implements Iterable<GridCell<Character>>{
     // Instance variables
     Character blockType;
     boolean[][] blockShape;
-    public CellPosition Pos;
+    private CellPosition Pos;
 
     List<GridCell<Character>> BlockList = new ArrayList<GridCell<Character>>();
 
@@ -28,12 +28,14 @@ public final class Tetromino implements Iterable<GridCell<Character>>{
     }
 
     // standard static (klassemetode)
-    /**
-     * 
-     * 
-     * 
+    /** 
+     * newTetromino is a standard static (package-private) method which contains a list of valid tetromino shapes to be returned when
+     * given a valid char type value. Valid Chars are "LJSZTIO".
+     * @param newBlockType value of type Char.
+     * @return a tetromino block of any valid shape.
+     * @throws IllegalArgumentException if input value does not match any of the valid Chars.
      */
-    public static Tetromino newTetromino(Character newBlockType) {
+    static Tetromino newTetromino(Character newBlockType) {
         Tetromino TetrominoBlock = switch(newBlockType) {
             case 'L' -> new Tetromino(newBlockType, new boolean[][] {
                 { false, false, false },
@@ -78,9 +80,11 @@ public final class Tetromino implements Iterable<GridCell<Character>>{
     }
 
     /**
-     * 
-     * 
-     * 
+     * shiftedBy creates a copy of an existing tetromino and shifts its CellPosition values relative
+     * to it's current position. Returns a new shifted copy of the given tetromino
+     * @param deltaRow number of rows to be shifted
+     * @param deltaCol number of columns to be shifted
+     * @return a shifted tetromino copy
      */
     public Tetromino shiftedBy(int deltaRow, int deltaCol) {
         
@@ -89,9 +93,10 @@ public final class Tetromino implements Iterable<GridCell<Character>>{
     }
 
     /**
-     * 
-     * 
-     * 
+     * shiftedToTopCenterOf uses the method to create a tetromino copy. It's CellPosition values are calculated to make 
+     * the tetromino be centered at the top of a grid of any size.
+     * @param dimension is of type GridDimension
+     * @return a tetromino copy centered at top of grid
      */
     public Tetromino shiftedToTopCenterOf(GridDimension dimension) {
         if (this.blockShape.length == 4)
