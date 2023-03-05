@@ -42,6 +42,8 @@ public class TetrisController implements KeyListener{
             System.out.println("pressed v");
         }
         else if (e.getKeyCode() == KeyEvent.VK_UP) {
+            this.controllModel.moveTetromino(-1, 0);
+            System.out.println("pressed ^");
             // Up arrow was e
         }
         else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
