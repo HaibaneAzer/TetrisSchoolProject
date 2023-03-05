@@ -29,21 +29,21 @@ public class TetrisController implements KeyListener{
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             // Left arrow was e
             this.controllModel.moveTetromino(0, -1);
-            System.out.println("pressed <-");
+            
         }
         else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             // Right arrow was e
             this.controllModel.moveTetromino(0, 1);
-            System.out.println("pressed ->");
+            
         }
         else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             // Down arrow was e
             this.controllModel.moveTetromino(1, 0);
-            System.out.println("pressed v");
+            
         }
         else if (e.getKeyCode() == KeyEvent.VK_UP) {
             this.controllModel.moveTetromino(-1, 0);
-            System.out.println("pressed ^");
+            
             // Up arrow was e
         }
         else if (e.getKeyCode() == KeyEvent.VK_SPACE) {

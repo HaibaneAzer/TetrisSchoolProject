@@ -80,9 +80,17 @@ public class TestTetrisModel {
 
     @Test
     public void testFailedMovement() {
-        TetrisBoard board = new TetrisBoard(20, 10);
+        int row = 20;
+        int col = 10;
+        TetrisBoard board = new TetrisBoard(row, col);
         TetrominoFactory factory = new PatternedTetrominoFactory("T");
         ControllableTetrisModel model = new TetrisModel(board, factory);
+
+        // colored edges
+        board.set(new CellPosition(0, 0), 'g');
+        board.set(new CellPosition(0, col - 1), 'y');
+        board.set(new CellPosition(row - 1, 0), 'r');
+        board.set(new CellPosition(row - 1, col - 1), 'b');
 
         for (int i = 0; i < 10; i++) {
             model.moveTetromino(0, 1);
