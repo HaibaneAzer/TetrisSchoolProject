@@ -77,7 +77,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
         return true;
 
     }
-
+    // NB: implement super rotation?
     @Override
     public boolean rotateTetromino() {
 
