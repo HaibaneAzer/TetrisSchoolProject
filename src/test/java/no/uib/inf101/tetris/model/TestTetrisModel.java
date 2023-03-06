@@ -117,6 +117,86 @@ public class TestTetrisModel {
         assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(0, 8), 'T')));
         assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(1, 7), 'T')));
 
+    }
+
+    @Test
+    public void testSuccessfulRotation() {
+        TetrisBoard board = new TetrisBoard(20, 10);
+        TetrominoFactory factory = new PatternedTetrominoFactory("T");
+        ControllableTetrisModel model = new TetrisModel(board, factory);
+
+        // rotate T block
+        model.moveTetromino(1, 0);
+        assertTrue(model.rotateTetromino());
+
+        ViewableTetrisModel model2 = (ViewableTetrisModel) model;
+        List<GridCell<Character>> tetroCells = new ArrayList<>();
+        for (GridCell<Character> gc : model2.getTetroTiles()) {
+            tetroCells.add(gc);
+        }
+
+        // check if block rotated correctly
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(0, 5), 'T')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(1, 4), 'T')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(1, 5), 'T')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(2, 5), 'T')));
+
+        // rotate block 4 times
+        model = (ControllableTetrisModel) model2;
+        for (int i = 0; i < 4; i++) {
+            model.rotateTetromino();
+        }
+        model2 = (ViewableTetrisModel) model;
+
+        List<GridCell<Character>> tetroCells2 = new ArrayList<>();
+        for (GridCell<Character> gc : model2.getTetroTiles()) {
+            tetroCells2.add(gc);
+        }
+        
+        // check position is the same as original
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(0, 5), 'T')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(1, 4), 'T')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(1, 5), 'T')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(2, 5), 'T')));
+
+    }
+
+    @Test
+    public void testFailedRotation() {
+        int row = 20;
+        int col = 10;
+        TetrisBoard board = new TetrisBoard(row, col);
+        TetrominoFactory factory = new PatternedTetrominoFactory("S");
+        ControllableTetrisModel model = new TetrisModel(board, factory);
+
+        // colored edges
+        board.set(new CellPosition(0, 0), 'g');
+        board.set(new CellPosition(0, col - 1), 'y');
+        board.set(new CellPosition(row - 1, 0), 'r');
+        board.set(new CellPosition(row - 1, col - 1), 'b');
+
+        model.moveTetromino(0, 2);
+    
+        // rotation should return false since T block cant rotate out of board.
+        assertFalse(model.rotateTetromino());
+
+        model.moveTetromino(1, 1);
+        model.rotateTetromino();
+        // rotation should return false since T block cant rotate into yellow corner
+        assertFalse(model.rotateTetromino());
+
+        ViewableTetrisModel model2 = (ViewableTetrisModel) model;
+
+        List<GridCell<Character>> tetroCells = new ArrayList<>();
+        for (GridCell<Character> gc : model2.getTetroTiles()) {
+            tetroCells.add(gc);
+        }
+        
+        // check position is within bounds and outside colored tile to the right
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(0, 7), 'S')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(1, 7), 'S')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(1, 8), 'S')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(2, 8), 'S')));
 
     }
 }

@@ -1,9 +1,5 @@
 package no.uib.inf101.tetris.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import no.uib.inf101.grid.CellPosition;
 import no.uib.inf101.grid.GridCell;
 import no.uib.inf101.grid.GridDimension;
 import no.uib.inf101.tetris.controller.ControllableTetrisModel;
@@ -14,7 +10,7 @@ import no.uib.inf101.tetris.view.ViewableTetrisModel;
 public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel{
     
     private final TetrisBoard Board;
-    private final TetrominoFactory tetroMaker;
+    final TetrominoFactory tetroMaker;
     private Tetromino fallingTetro; 
 
     public TetrisModel(TetrisBoard Board, TetrominoFactory tetroMaker) {
@@ -42,44 +38,58 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     @Override
     public boolean moveTetromino(int deltaRow, int deltaCol) {
 
-        List<GridCell<Character>> TetroCells = new ArrayList<>();
-        // check bounds
-        for (GridCell<Character> gc : this.fallingTetro) {
-            TetroCells.add(gc);
-            if (!isValidPos(new CellPosition(gc.pos().row() + deltaRow, gc.pos().col() + deltaCol))) {
-                return false;
-            }
-        }
-        // check overlap
-        if (!ColoredTileOverlap(TetroCells, deltaRow, deltaCol)) {
+        
+        if (!isValidPos(this.fallingTetro.shiftedBy(deltaRow, deltaCol))) {
             return false;
         }
-        
+        if (!ColoredTileOverlap(this.fallingTetro.shiftedBy(deltaRow, deltaCol))) {
+            return false;
+        }
+
         this.fallingTetro = this.fallingTetro.shiftedBy(deltaRow, deltaCol);
         return true;
 
     }
     
-    private boolean isValidPos(CellPosition Pos) {
-        boolean withinBoard = Pos.row() >= 0 && Pos.row() < this.Board.rows() &&
-                              Pos.col() >= 0 && Pos.col() < this.Board.cols();
-        return withinBoard;
+    private boolean isValidPos(Tetromino shiftedTetro) {
+        // check on board
+        for (GridCell<Character> gc : shiftedTetro) {
+            if (!(gc.pos().row() >= 0 && gc.pos().row() < this.Board.rows() &&
+                gc.pos().col() >= 0 && gc.pos().col() < this.Board.cols())) {
+                return false;
+           }
+        }
+        return true;
+        
     }
     
-    private boolean ColoredTileOverlap(List<GridCell<Character>> TetroTiles, int deltaRow, int deltaCol) {
+    private boolean ColoredTileOverlap(Tetromino shiftedTetro) {
         // check overlap
         for (GridCell<Character> gc2 : this.Board) {
-            for (int i = 0; i < TetroTiles.size(); i++) {
-                // NB: make a method for this. checks all tiles that are not blank on board
-                // and check if tetroTilePos + deltaPos is equal to pos of colored tile.
-                if (gc2.value() != '-' && TetroTiles.get(i).pos().row() + deltaRow == gc2.pos().row()
-                                       && TetroTiles.get(i).pos().col() + deltaCol == gc2.pos().col()) {
-                    return false;
+            for (GridCell<Character> gc : shiftedTetro) {
+                if (gc2.value() != '-' 
+                && gc.pos().row() == gc2.pos().row()
+                && gc.pos().col() == gc2.pos().col()) {
+                return false;
                 }
             }
         }
         return true;
 
+    }
+
+    @Override
+    public boolean rotateTetromino() {
+
+        if (!isValidPos(this.fallingTetro.rotateBy())) {
+            return false;
+        }
+        if (!ColoredTileOverlap(this.fallingTetro.rotateBy())) {
+            return false;
+        }
+
+        this.fallingTetro = this.fallingTetro.rotateBy();
+        return true;
     }
 
 }

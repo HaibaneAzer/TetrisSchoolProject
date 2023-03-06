@@ -92,6 +92,7 @@ public final class Tetromino implements Iterable<GridCell<Character>>{
         return shiftedTetro;
     }
 
+
     /**
      * shiftedToTopCenterOf uses the method to create a tetromino copy. It's CellPosition values are calculated to make 
      * the tetromino be centered at the top of a grid of any size.
@@ -103,6 +104,34 @@ public final class Tetromino implements Iterable<GridCell<Character>>{
         return shiftedBy(-1, (int) Math.floor(dimension.cols()/2) - 2);
         else 
         return shiftedBy(-1, (int) Math.floor(dimension.cols()/2) - 1);
+    }
+    /**
+     * 
+     * 
+     */
+    public Tetromino rotateBy() {
+
+        int sideLength = this.blockShape.length;
+        // old point coordinates
+        int oldRow;
+        int oldCol;
+        boolean[][] newBlockShape = new boolean[sideLength][sideLength];
+        // calculate rotation
+        for (int row = 0; row < sideLength; row++) {
+            for (int col = 0; col < sideLength; col++) {
+                
+                // rotation of grid -90 degrees.
+                // using formula (r2, c2) = (n - 1 - c1, r1)
+                // where n is the side length of the grid
+                oldRow = (this.blockShape.length - 1) - col;
+                oldCol = row;
+
+                newBlockShape[row][col] = this.blockShape[oldRow][oldCol];
+            }
+        }
+
+        Tetromino rotatedTetro = new Tetromino(this.blockType, newBlockShape, this.Pos);
+        return rotatedTetro;
     }
 
     @Override

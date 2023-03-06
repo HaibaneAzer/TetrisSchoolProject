@@ -42,7 +42,7 @@ public class TetrisController implements KeyListener{
             
         }
         else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            this.controllModel.moveTetromino(-1, 0);
+            this.controllModel.rotateTetromino();
             
             // Up arrow was e
         }
