@@ -1,6 +1,7 @@
 package no.uib.inf101.tetris.view;
 
 import no.uib.inf101.grid.GridDimension;
+import no.uib.inf101.tetris.model.GameState;
 import no.uib.inf101.grid.GridCell;
 
 public interface ViewableTetrisModel {
@@ -29,4 +30,12 @@ public interface ViewableTetrisModel {
      * @return an Iterable list of tile values where tetromino-objects exist.
      */
     Iterable<GridCell<Character>> getTetroTiles();
+
+
+    /**
+     * getGameState is called to see if game status is either
+     * ACTIVE_GAME or GAME_OVER.
+     * @return GameState-object.
+     */
+    GameState getGameState();
 }

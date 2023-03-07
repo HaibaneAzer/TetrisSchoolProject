@@ -36,5 +36,15 @@ public class DefaultColorTheme implements ColorTheme {
     public Color getBackgroundColor() {
         return null;
     }
+
+    @Override
+    public Color getGameOverColor(String C) {
+        Color color = switch(C) {
+            case "back" -> new Color(0, 0, 0, 128);
+            case "front" -> Color.WHITE;
+            default -> throw new IllegalArgumentException("No available color for '" + C + "'\nTry 'back' or 'front'.");
+        };
+        return color;
+    }
     
 }

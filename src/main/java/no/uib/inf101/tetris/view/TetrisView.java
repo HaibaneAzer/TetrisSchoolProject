@@ -1,11 +1,13 @@
 package no.uib.inf101.tetris.view;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.*;
 
 import no.uib.inf101.grid.GridCell;
+import no.uib.inf101.tetris.model.GameState;
 
 import javax.swing.JPanel;
 
@@ -63,6 +65,19 @@ public class TetrisView extends JPanel {
     drawCells(Canvas, VModel.getTilesOnBoard(), Convert, this.setColor);
     // draw tetrominos
     drawCells(Canvas, VModel.getTetroTiles(), Convert, this.setColor);
+
+    // draw game over screen when a tetromino can't spawn
+    if (VModel.getGameState().equals(GameState.GAME_OVER)) {
+      Rectangle2D drawGameOverScreen = new Rectangle2D.Double(0, 0, this.getWidth(), this.getHeight());
+      Canvas.setColor(this.setColor.getGameOverColor("back"));
+      Canvas.fill(drawGameOverScreen);
+
+      Canvas.setColor(this.setColor.getGameOverColor("front"));
+      Canvas.setFont(new Font("Gill Sans MT", Font.BOLD, 50));
+      Inf101Graphics.drawCenteredString(Canvas, "GAME OVER", 0, 0, this.getWidth(), this.getHeight());
+      
+    }
+
   }  
 
   private static void drawCells(Graphics2D Canvas, Iterable<GridCell<Character>> Cells, CellPositionToPixelConverter Converter, ColorTheme newColor) {
@@ -72,7 +87,6 @@ public class TetrisView extends JPanel {
       Canvas.setColor(newColor.getCellColor(GridChar.value()));
       Canvas.fill(newRectangle);
     }
-
   }
   
 }

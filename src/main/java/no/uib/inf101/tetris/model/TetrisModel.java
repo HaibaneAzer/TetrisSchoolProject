@@ -9,14 +9,16 @@ import no.uib.inf101.tetris.view.ViewableTetrisModel;
 
 public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel{
     
-    private final TetrisBoard Board;
-    final TetrominoFactory tetroMaker;
+    private TetrisBoard Board;
+    private final TetrominoFactory tetroMaker;
     private Tetromino fallingTetro; 
+    GameState gameStatus;
 
     public TetrisModel(TetrisBoard Board, TetrominoFactory tetroMaker) {
         this.Board = Board;
         this.tetroMaker = tetroMaker;
         this.fallingTetro = tetroMaker.getNext().shiftedToTopCenterOf(Board);
+        this.gameStatus = GameState.ACTIVE_GAME;
     }
 
     @Override
@@ -26,7 +28,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
 
     @Override
     public Iterable<GridCell<Character>> getTilesOnBoard() {
-       return this.Board;
+        return this.Board;
 
     }
 
@@ -37,15 +39,10 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
 
     @Override
     public boolean moveTetromino(int deltaRow, int deltaCol) {
-
         
         if (!isValidPos(this.fallingTetro.shiftedBy(deltaRow, deltaCol))) {
             return false;
         }
-        if (!ColoredTileOverlap(this.fallingTetro.shiftedBy(deltaRow, deltaCol))) {
-            return false;
-        }
-
         this.fallingTetro = this.fallingTetro.shiftedBy(deltaRow, deltaCol);
         return true;
 
@@ -59,7 +56,8 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
                 return false;
            }
         }
-        return true;
+        
+        return ColoredTileOverlap(shiftedTetro);
         
     }
     
@@ -84,12 +82,51 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
         if (!isValidPos(this.fallingTetro.rotateBy())) {
             return false;
         }
-        if (!ColoredTileOverlap(this.fallingTetro.rotateBy())) {
-            return false;
-        }
-
         this.fallingTetro = this.fallingTetro.rotateBy();
         return true;
+    }
+
+    @Override
+    public boolean dropTetromino() {
+
+        while (isValidPos(this.fallingTetro.shiftedBy(1, 0))) {
+            moveTetromino(1, 0);
+        }
+        glueTetrominoToBoard();
+        return true;
+    }
+
+    /**
+     * getNextTetromino spawns a new tetromino-object and checks if it has any legal moves.
+     * If not, set game status to GAME_OVER.
+     */
+    public void getNextTetromino() {
+
+        this.fallingTetro = tetroMaker.getNext().shiftedToTopCenterOf(Board);
+        if (!isValidPos(this.fallingTetro)) {
+            this.gameStatus = GameState.GAME_OVER;
+        }
+    }
+
+     /** 
+      * glueTetrominoToBoard changes the char value on a Board tile to that of the Tetromino-object,
+      * with corrosponding CellPosition.
+      */
+    public void glueTetrominoToBoard() {
+
+        for (GridCell<Character> gc : getTetroTiles()) {
+            for (GridCell<Character> boardCell : getTilesOnBoard()) {
+                if (boardCell.pos().equals(gc.pos())) {
+                    this.Board.set(gc.pos(), gc.value());
+                }
+            }
+        }
+        getNextTetromino();
+    }
+
+    @Override
+    public GameState getGameState() {
+        return this.gameStatus;
     }
 
 }

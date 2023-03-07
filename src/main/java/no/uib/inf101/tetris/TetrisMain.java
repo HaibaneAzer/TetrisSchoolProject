@@ -18,7 +18,7 @@ public class TetrisMain {
   
   static final int row = 20;
   static final int col = 10;
-
+ 
   public static void main(String[] args) {
     // Tetris Board/Model/view 
     TetrisBoard Board = new TetrisBoard(row, col);
@@ -32,7 +32,7 @@ public class TetrisMain {
 
     TetrisView view = new TetrisView(Model);
 
-    // controller
+    // controller  
     new TetrisController(Model, view);
     
     // The JFrame is the "root" application window.

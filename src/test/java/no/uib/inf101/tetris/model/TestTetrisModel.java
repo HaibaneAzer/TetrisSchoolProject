@@ -199,4 +199,35 @@ public class TestTetrisModel {
         assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(2, 8), 'S')));
 
     }
+
+    @Test
+    public void testSuccessfulDrop() {
+        int row = 20;
+        int col = 10;
+        TetrisBoard board = new TetrisBoard(row, col);
+        TetrominoFactory factory = new PatternedTetrominoFactory("S");
+        ControllableTetrisModel model = new TetrisModel(board, factory);
+
+        // colored edges
+        board.set(new CellPosition(0, 0), 'g');
+        board.set(new CellPosition(0, col - 1), 'y');
+        board.set(new CellPosition(row - 1, 0), 'r');
+        board.set(new CellPosition(row - 1, col - 1), 'b');
+
+        // check if drop succeeded
+        assertTrue(model.dropTetromino());
+
+        ViewableTetrisModel model2 = (ViewableTetrisModel) model;
+
+        List<GridCell<Character>> tetroCells = new ArrayList<>();
+        for (GridCell<Character> gc : model2.getTilesOnBoard()) {
+            tetroCells.add(gc);
+        }
+
+        // check position is on bottom of board
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(19, 4), 'S')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(19, 5), 'S')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(18, 5), 'S')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(18, 6), 'S')));
+    }
 }
