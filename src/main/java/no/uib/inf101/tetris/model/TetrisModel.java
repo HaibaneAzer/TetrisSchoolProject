@@ -12,13 +12,15 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     private TetrisBoard Board;
     private final TetrominoFactory tetroMaker;
     private Tetromino fallingTetro; 
-    GameState gameStatus;
+    private GameState gameStatus;
+    private int totalScore;
 
     public TetrisModel(TetrisBoard Board, TetrominoFactory tetroMaker) {
         this.Board = Board;
         this.tetroMaker = tetroMaker;
         this.fallingTetro = tetroMaker.getNext().shiftedToTopCenterOf(Board);
         this.gameStatus = GameState.ACTIVE_GAME;
+        this.totalScore = 0;
     }
 
     @Override
@@ -121,6 +123,13 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
                 }
             }
         }
+        // check if rows are full
+        int score = this.Board.removeFullRows();
+        if (score != 0) {
+            this.totalScore += this.Board.cols()*score;
+            System.out.println(this.totalScore);
+        }
+        // get new tetromino
         getNextTetromino();
     }
 
