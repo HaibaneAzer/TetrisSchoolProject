@@ -10,7 +10,7 @@ På steg 5 lærte eg hvordan eg kan rotere en grid av ulike størrelser med å b
 ## Hva er det neste du ønsker å lære om Java og programmering?
 
 <!-- ditt svar her -->
-Har lyst å lære litt om hvordan en kan kjøre et program lokalt nettverk, eventuelt lagre verdier (som highscore på tetris) på internett.
+Har lyst å lære litt om hvordan en kan kjøre et program på lokalt nettverk, eventuelt lagre verdier (som highscore på tetris) på internett.
 
 ## Hvilke grep gjør vi for å øke modulariteten i koden? Gi noen eksempeler.
 
