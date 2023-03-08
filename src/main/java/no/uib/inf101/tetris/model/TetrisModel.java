@@ -91,6 +91,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
         return true;
     }
     
+    // Fikk hjelp av Elias Ruud Aronsen til å finne feil i IsValidPos metoden.
     private boolean isValidPos(Tetromino shiftedTetro) {
         // check on board
         for (GridCell<Character> gc : shiftedTetro) {
@@ -120,7 +121,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
      * getNextTetromino spawns a new tetromino-object and checks if it has any legal moves.
      * If not, set game status to GAME_OVER.
      */
-    public void getNextTetromino() {
+    private void getNextTetromino() {
 
         this.fallingTetro = tetroMaker.getNext().shiftedToTopCenterOf(Board);
         if (!isValidPos(this.fallingTetro)) {
@@ -132,7 +133,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
       * glueTetrominoToBoard changes the char value on a Board tile to that of the Tetromino-object,
       * with corrosponding CellPosition.
       */
-    public void glueTetrominoToBoard() {
+    private void glueTetrominoToBoard() {
 
         for (GridCell<Character> gc : getTetroTiles()) {
             for (GridCell<Character> boardCell : getTilesOnBoard()) {

@@ -31,6 +31,7 @@ public class Grid<E> implements IGrid<E>{
         }
 
     }
+
     // constructor 2
     public Grid(int row, int col, E value) {
         this.row = row;
@@ -48,7 +49,7 @@ public class Grid<E> implements IGrid<E>{
         
     }
 
-    // Comment: Fikk hjelp av Elias Ruud Aronsen med å finne ut hvorfor set() metoden ikke gjorde det eg ville.
+    // Fikk hjelp av Elias Ruud Aronsen til å finne feil i set metoden.
     @Override
     public void set(CellPosition pos, E value) {
         if (!this.positionIsOnGrid(pos)) {

@@ -27,7 +27,6 @@ public final class Tetromino implements Iterable<GridCell<Character>>{
 
     }
 
-    // standard static (klassemetode)
     /** 
      * newTetromino is a standard static (package-private) method which contains a list of valid tetromino shapes to be returned when
      * given a valid char type value. Valid Chars are "LJSZTIO".
@@ -92,7 +91,6 @@ public final class Tetromino implements Iterable<GridCell<Character>>{
         return shiftedTetro;
     }
 
-
     /**
      * shiftedToTopCenterOf uses the shiftedBy method to create a tetromino copy. It's CellPosition values are calculated to make 
      * the tetromino be centered at the top of a grid of any size.
@@ -105,6 +103,7 @@ public final class Tetromino implements Iterable<GridCell<Character>>{
         else 
         return shiftedBy(-1, (int) Math.floor(dimension.cols()/2) - 1);
     }
+
     /**
      * rotateBy creates an empty boolean[][] which gets filled with the coordinates of the old boolean[][]
      * rotated 90 degrees (clockwise). It then uses the new boolean[][] to make a copy of the previous tetromino-object.
@@ -140,7 +139,6 @@ public final class Tetromino implements Iterable<GridCell<Character>>{
                 }
             }
         }
-
         Tetromino rotatedTetro = new Tetromino(this.blockType, newBlockShape, this.Pos);
         return rotatedTetro;
     }
@@ -203,7 +201,5 @@ public final class Tetromino implements Iterable<GridCell<Character>>{
 
         return true;
     }
-
-    
 
 }
