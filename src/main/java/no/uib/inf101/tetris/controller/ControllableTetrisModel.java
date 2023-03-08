@@ -37,4 +37,16 @@ public interface ControllableTetrisModel {
      */
     GameState getGameState();
 
+    /**
+     * getTimePerTick gets milliseconds for every game tick.
+     * standard is 1000 (int value) which sets gametick to every second.
+     * @return int value representing number of milliseconds per tick.
+     */
+    int getTimePerTick();
+
+    /**
+     * clockTick is an in-game clock which moves a tetromino-object down for every tick.
+     */
+    boolean clockTick();
+
 }

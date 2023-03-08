@@ -31,12 +31,32 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     @Override
     public Iterable<GridCell<Character>> getTilesOnBoard() {
         return this.Board;
-
     }
 
     @Override
     public Iterable<GridCell<Character>> getTetroTiles() {
         return this.fallingTetro;
+    }
+
+    @Override
+    public GameState getGameState() {
+        return this.gameStatus;
+    }
+
+    @Override
+    public int getTimePerTick() {
+        return 1000;
+    }
+
+    @Override
+    public boolean clockTick() {
+        
+        if (moveTetromino(1, 0)) {
+            return true;
+        }
+        glueTetrominoToBoard();
+        return false;
+        
     }
 
     @Override
@@ -49,34 +69,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
         return true;
 
     }
-    
-    private boolean isValidPos(Tetromino shiftedTetro) {
-        // check on board
-        for (GridCell<Character> gc : shiftedTetro) {
-            if (!(gc.pos().row() >= 0 && gc.pos().row() < this.Board.rows() &&
-                gc.pos().col() >= 0 && gc.pos().col() < this.Board.cols())) {
-                return false;
-           }
-        }
-        
-        return ColoredTileOverlap(shiftedTetro);
-        
-    }
-    
-    private boolean ColoredTileOverlap(Tetromino shiftedTetro) {
-        // check overlap
-        for (GridCell<Character> gc2 : this.Board) {
-            for (GridCell<Character> gc : shiftedTetro) {
-                if (gc2.value() != '-' 
-                && gc.pos().row() == gc2.pos().row()
-                && gc.pos().col() == gc2.pos().col()) {
-                return false;
-                }
-            }
-        }
-        return true;
 
-    }
     // NB: implement super rotation?
     @Override
     public boolean rotateTetromino() {
@@ -95,6 +88,31 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
             moveTetromino(1, 0);
         }
         glueTetrominoToBoard();
+        return true;
+    }
+    
+    private boolean isValidPos(Tetromino shiftedTetro) {
+        // check on board
+        for (GridCell<Character> gc : shiftedTetro) {
+            if (!(gc.pos().row() >= 0 && gc.pos().row() < this.Board.rows() &&
+                gc.pos().col() >= 0 && gc.pos().col() < this.Board.cols())) {
+                return false;
+           }
+        }
+        return ColoredTileOverlap(shiftedTetro); 
+    }
+    
+    private boolean ColoredTileOverlap(Tetromino shiftedTetro) {
+        // check overlap
+        for (GridCell<Character> gc2 : this.Board) {
+            for (GridCell<Character> gc : shiftedTetro) {
+                if (gc2.value() != '-' 
+                && gc.pos().row() == gc2.pos().row()
+                && gc.pos().col() == gc2.pos().col()) {
+                return false;
+                }
+            }
+        }
         return true;
     }
 
@@ -133,9 +151,5 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
         getNextTetromino();
     }
 
-    @Override
-    public GameState getGameState() {
-        return this.gameStatus;
-    }
 
 }

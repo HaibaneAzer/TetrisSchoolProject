@@ -230,4 +230,58 @@ public class TestTetrisModel {
         assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(18, 5), 'S')));
         assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(18, 6), 'S')));
     }
+
+    @Test
+    public void testClockTickMovement() {
+        int row = 20;
+        int col = 10;
+        TetrisBoard board = new TetrisBoard(row, col);
+        TetrominoFactory factory = new PatternedTetrominoFactory("T");
+        ControllableTetrisModel model = new TetrisModel(board, factory);
+
+        assertTrue(model.clockTick());
+
+        ViewableTetrisModel model2 = (ViewableTetrisModel) model;
+
+        List<GridCell<Character>> tetroCells = new ArrayList<>();
+        for (GridCell<Character> gc : model2.getTetroTiles()) {
+            tetroCells.add(gc);
+        }
+
+        // check position is moved one down.
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(1, 4), 'T')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(1, 5), 'T')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(1, 6), 'T')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(2, 5), 'T')));
+    }
+
+    @Test
+    public void testClockTickFail() {
+        int row = 20;
+        int col = 10;
+        TetrisBoard board = new TetrisBoard(row, col);
+        TetrominoFactory factory = new PatternedTetrominoFactory("T");
+        ControllableTetrisModel model = new TetrisModel(board, factory);
+
+        assertTrue(model.clockTick());
+
+        for (int i = 0; i < row - 3; i++) {
+            model.clockTick();
+        }
+        // return false when tetromino can't move anymore
+        assertFalse(model.clockTick());
+
+        ViewableTetrisModel model2 = (ViewableTetrisModel) model;
+
+        List<GridCell<Character>> tetroCells = new ArrayList<>();
+        for (GridCell<Character> gc : model2.getTilesOnBoard()) {
+            tetroCells.add(gc);
+        }
+
+        // check if T block is at bottom and glued.
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(18, 4), 'T')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(18, 5), 'T')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(18, 6), 'T')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(19, 5), 'T')));
+    }
 }

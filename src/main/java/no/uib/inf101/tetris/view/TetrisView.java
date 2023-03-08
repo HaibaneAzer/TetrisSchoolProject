@@ -68,13 +68,14 @@ public class TetrisView extends JPanel {
 
     // draw game over screen when a tetromino can't spawn
     if (VModel.getGameState().equals(GameState.GAME_OVER)) {
-      Rectangle2D drawGameOverScreen = new Rectangle2D.Double(0, 0, this.getWidth(), this.getHeight());
+
+      Rectangle2D drawGameOverScreen = new Rectangle2D.Double(0, Math.round(this.getHeight()/2) - 3*OUTERMARGIN, this.getWidth(), 69 + OUTERMARGIN);
       Canvas.setColor(this.setColor.getGameOverColor("back"));
       Canvas.fill(drawGameOverScreen);
 
       Canvas.setColor(this.setColor.getGameOverColor("front"));
-      Canvas.setFont(new Font("Gill Sans MT", Font.BOLD, 50));
-      Inf101Graphics.drawCenteredString(Canvas, "GAME OVER", 0, 0, this.getWidth(), this.getHeight());
+      Canvas.setFont(new Font("Times New Roman", Font.PLAIN, 69));
+      Inf101Graphics.drawCenteredString(Canvas, "YOU DIED", 0, 0, this.getWidth(), this.getHeight());
       
     }
 

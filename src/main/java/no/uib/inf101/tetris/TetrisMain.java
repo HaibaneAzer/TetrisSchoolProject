@@ -2,8 +2,9 @@ package no.uib.inf101.tetris;
 
 import javax.swing.JFrame;
 
-import no.uib.inf101.grid.CellPosition;
 import no.uib.inf101.tetris.controller.TetrisController;
+import no.uib.inf101.tetris.midi.TetrisSong;
+import no.uib.inf101.tetris.model.GameState;
 import no.uib.inf101.tetris.model.TetrisBoard;
 import no.uib.inf101.tetris.model.TetrisModel;
 import no.uib.inf101.tetris.model.tetromino.RandomTetrominoFactory;
@@ -23,13 +24,7 @@ public class TetrisMain {
     // Tetris Board/Model/view 
     TetrisBoard Board = new TetrisBoard(row, col);
     TetrominoFactory tetroMaker = new RandomTetrominoFactory();
-    Board.set(new CellPosition(0, 0), 'g');
-    Board.set(new CellPosition(0, col - 1), 'y');
-    Board.set(new CellPosition(row - 1, 0), 'r');
-    Board.set(new CellPosition(row - 1, col - 1), 'b');
-
     TetrisModel Model = new TetrisModel(Board, tetroMaker);
-
     TetrisView view = new TetrisView(Model);
 
     // controller  

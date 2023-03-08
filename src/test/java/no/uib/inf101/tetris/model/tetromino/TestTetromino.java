@@ -71,7 +71,7 @@ public class TestTetromino {
         assertTrue(objs.contains(new GridCell<>(new CellPosition(12, 101), 'S')));
 
 
-}
+    }
     @Test
     public void tetrominoDisplacement() {
         //
@@ -91,7 +91,7 @@ public class TestTetromino {
         assertTrue(objs.contains(new GridCell<>(new CellPosition(1, 21), 'S')));
         assertTrue(objs.contains(new GridCell<>(new CellPosition(1, 22), 'S')));
         assertTrue(objs.contains(new GridCell<>(new CellPosition(2, 21), 'S')));
-}
+    }
 
     @Test 
     public void tetrominoshiftedToTopCenterOf() {
@@ -114,18 +114,58 @@ public class TestTetromino {
         for (GridCell<Character> gc : tetro2) {
             objs2.add(gc);
         }
-        //
         
+        // check position for S block
         assertTrue(objs1.contains(new GridCell<>(new CellPosition(0, 5), 'S')));
         assertTrue(objs1.contains(new GridCell<>(new CellPosition(0, 6), 'S')));
         assertTrue(objs1.contains(new GridCell<>(new CellPosition(1, 4), 'S')));
         assertTrue(objs1.contains(new GridCell<>(new CellPosition(1, 5), 'S')));
-        //
         
+        // check position for O block
         assertTrue(objs2.contains(new GridCell<>(new CellPosition(0, 4), 'O')));
         assertTrue(objs2.contains(new GridCell<>(new CellPosition(0, 5), 'O')));
         assertTrue(objs2.contains(new GridCell<>(new CellPosition(1, 5), 'O')));
         assertTrue(objs2.contains(new GridCell<>(new CellPosition(1, 4), 'O')));
 
-}
+    }
+
+    @Test
+    public void tetrominoRotation() {
+        //
+        Grid<Character> grid = new Grid<Character>(20, 10, '-');
+        Tetromino tetro1 = Tetromino.newTetromino('I');
+        tetro1 = tetro1.shiftedToTopCenterOf(grid);
+        tetro1 = tetro1.shiftedBy(1, 0);
+        tetro1 = tetro1.rotateBy();
+        
+        List<GridCell<Character>> objs1 = new ArrayList<>();
+        for (GridCell<Character> gc : tetro1) {
+            objs1.add(gc);
+        }
+
+        Tetromino tetro2 = Tetromino.newTetromino('L');
+        tetro2 = tetro2.shiftedToTopCenterOf(grid);
+        tetro2 = tetro2.shiftedBy(1, 0);
+        tetro2 = tetro2.rotateBy();
+
+        List<GridCell<Character>> objs2 = new ArrayList<>();
+        for (GridCell<Character> gc : tetro2) {
+            objs2.add(gc);
+        }
+
+        // Check if I block is rotated correctly
+        assertEquals(4, objs1.size());
+        assertTrue(objs1.contains(new GridCell<>(new CellPosition(0, 5), 'I')));
+        assertTrue(objs1.contains(new GridCell<>(new CellPosition(1, 5), 'I')));
+        assertTrue(objs1.contains(new GridCell<>(new CellPosition(2, 5), 'I')));
+        assertTrue(objs1.contains(new GridCell<>(new CellPosition(3, 5), 'I')));
+
+        // Check if L block is rotated correctly
+        assertEquals(4, objs2.size());
+        assertTrue(objs2.contains(new GridCell<>(new CellPosition(0, 4), 'L')));
+        assertTrue(objs2.contains(new GridCell<>(new CellPosition(0, 5), 'L')));
+        assertTrue(objs2.contains(new GridCell<>(new CellPosition(1, 5), 'L')));
+        assertTrue(objs2.contains(new GridCell<>(new CellPosition(2, 5), 'L')));
+    }
+
 }
