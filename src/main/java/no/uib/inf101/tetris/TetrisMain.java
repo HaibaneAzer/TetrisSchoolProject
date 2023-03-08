@@ -3,8 +3,6 @@ package no.uib.inf101.tetris;
 import javax.swing.JFrame;
 
 import no.uib.inf101.tetris.controller.TetrisController;
-import no.uib.inf101.tetris.midi.TetrisSong;
-import no.uib.inf101.tetris.model.GameState;
 import no.uib.inf101.tetris.model.TetrisBoard;
 import no.uib.inf101.tetris.model.TetrisModel;
 import no.uib.inf101.tetris.model.tetromino.RandomTetrominoFactory;

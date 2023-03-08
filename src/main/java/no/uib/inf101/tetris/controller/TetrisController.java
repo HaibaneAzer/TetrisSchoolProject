@@ -89,10 +89,10 @@ public class TetrisController implements KeyListener{
         }
     }
     // bonus oppg:
-    private void getTimerDelay() {
+   /*  private void getTimerDelay() {
         // set new delay for timer
         this.tTimer.setDelay(controllModel.getTimePerTick());
         this.tTimer.setInitialDelay(controllModel.getTimePerTick());
 
-    }
+    } */
 }
