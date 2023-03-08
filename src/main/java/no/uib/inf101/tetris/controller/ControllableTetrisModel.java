@@ -16,10 +16,11 @@ public interface ControllableTetrisModel {
 
     /**
      * rotateTetromino is used to rotate a tetromino-object clock-wise at its current posistion.
+     * @param clockwise is true, false is counter-clockwise
      * @return true if rotation was successful. 
      * returns false if tiles are obstructed or spot is out of bounds
      */
-    boolean rotateTetromino();
+    boolean rotateTetromino(boolean clockwise);
 
 
     /**

@@ -127,7 +127,7 @@ public class TestTetrisModel {
 
         // rotate T block
         model.moveTetromino(1, 0);
-        assertTrue(model.rotateTetromino());
+        assertTrue(model.rotateTetromino(true));
 
         ViewableTetrisModel model2 = (ViewableTetrisModel) model;
         List<GridCell<Character>> tetroCells = new ArrayList<>();
@@ -144,7 +144,7 @@ public class TestTetrisModel {
         // rotate block 4 times
         model = (ControllableTetrisModel) model2;
         for (int i = 0; i < 4; i++) {
-            model.rotateTetromino();
+            model.rotateTetromino(true);
         }
         model2 = (ViewableTetrisModel) model;
 
@@ -178,12 +178,12 @@ public class TestTetrisModel {
         model.moveTetromino(0, 2);
     
         // rotation should return false since T block cant rotate out of board.
-        assertFalse(model.rotateTetromino());
+        assertFalse(model.rotateTetromino(true));
 
         model.moveTetromino(1, 1);
-        model.rotateTetromino();
+        model.rotateTetromino(true);
         // rotation should return false since T block cant rotate into yellow corner
-        assertFalse(model.rotateTetromino());
+        assertFalse(model.rotateTetromino(true));
 
         ViewableTetrisModel model2 = (ViewableTetrisModel) model;
 

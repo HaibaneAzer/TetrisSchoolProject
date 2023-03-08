@@ -82,7 +82,11 @@ public class Grid<E> implements IGrid<E>{
     public int cols() {
         return this.col;
     }
-
+    /**
+     * iterator returns a list of cells of given grid. 
+     * This list calls .iterator() to convert the list into
+     * the type Iterator<GridCell<E>>.
+     */
     public Iterator<GridCell<E>> iterator() {
         List<GridCell<E>> D1Cells = Cells.stream().flatMap(Collection::stream).collect(Collectors.toList());
 

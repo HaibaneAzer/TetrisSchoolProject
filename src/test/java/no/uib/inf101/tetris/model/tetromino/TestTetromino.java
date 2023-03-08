@@ -136,7 +136,7 @@ public class TestTetromino {
         Tetromino tetro1 = Tetromino.newTetromino('I');
         tetro1 = tetro1.shiftedToTopCenterOf(grid);
         tetro1 = tetro1.shiftedBy(1, 0);
-        tetro1 = tetro1.rotateBy();
+        tetro1 = tetro1.rotateBy(true);
         
         List<GridCell<Character>> objs1 = new ArrayList<>();
         for (GridCell<Character> gc : tetro1) {
@@ -146,7 +146,7 @@ public class TestTetromino {
         Tetromino tetro2 = Tetromino.newTetromino('L');
         tetro2 = tetro2.shiftedToTopCenterOf(grid);
         tetro2 = tetro2.shiftedBy(1, 0);
-        tetro2 = tetro2.rotateBy();
+        tetro2 = tetro2.rotateBy(true);
 
         List<GridCell<Character>> objs2 = new ArrayList<>();
         for (GridCell<Character> gc : tetro2) {

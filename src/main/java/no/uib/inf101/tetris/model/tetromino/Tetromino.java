@@ -94,7 +94,7 @@ public final class Tetromino implements Iterable<GridCell<Character>>{
 
 
     /**
-     * shiftedToTopCenterOf uses the method to create a tetromino copy. It's CellPosition values are calculated to make 
+     * shiftedToTopCenterOf uses the shiftedBy method to create a tetromino copy. It's CellPosition values are calculated to make 
      * the tetromino be centered at the top of a grid of any size.
      * @param dimension is of type GridDimension
      * @return a tetromino copy centered at top of grid
@@ -106,11 +106,20 @@ public final class Tetromino implements Iterable<GridCell<Character>>{
         return shiftedBy(-1, (int) Math.floor(dimension.cols()/2) - 1);
     }
     /**
-     * 
-     * 
+     * rotateBy creates an empty boolean[][] which gets filled with the coordinates of the old boolean[][]
+     * rotated 90 degrees (clockwise). It then uses the new boolean[][] to make a copy of the previous tetromino-object.
+     * formula for rotation of a matrix used is using formula: 
+     * (r2, c2) = (n - 1 - c1, r1)
+     * and (r2, c2) = (c1, n - 1 - r1)
+     * where n is the side length of the grid
+     * @param clockwise is true, false is counter-clockwise
+     * @return a rotated tetromino copy.
      */
-    public Tetromino rotateBy() {
-
+    public Tetromino rotateBy(boolean clockwise) {
+        // default true if value is not boolean.
+        if (!(clockwise == true || clockwise == false)) {
+            clockwise = true;
+        }
         int sideLength = this.blockShape.length;
         // old point coordinates
         int oldRow;
@@ -119,14 +128,16 @@ public final class Tetromino implements Iterable<GridCell<Character>>{
         // calculate rotation
         for (int row = 0; row < sideLength; row++) {
             for (int col = 0; col < sideLength; col++) {
-                
-                // rotation of grid -90 degrees.
-                // using formula (r2, c2) = (n - 1 - c1, r1)
-                // where n is the side length of the grid
-                oldRow = (this.blockShape.length - 1) - col;
-                oldCol = row;
-
-                newBlockShape[row][col] = this.blockShape[oldRow][oldCol];
+                if (clockwise) {
+                    oldRow = (this.blockShape.length - 1) - col;
+                    oldCol = row;
+                    newBlockShape[row][col] = this.blockShape[oldRow][oldCol];
+                }
+                else {
+                    oldRow = col;
+                    oldCol = (this.blockShape.length - 1) - row;
+                    newBlockShape[row][col] = this.blockShape[oldRow][oldCol];
+                }
             }
         }
 

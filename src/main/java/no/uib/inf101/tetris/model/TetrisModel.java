@@ -72,12 +72,12 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
 
     // NB: implement super rotation?
     @Override
-    public boolean rotateTetromino() {
+    public boolean rotateTetromino(boolean clockwise) {
 
-        if (!isValidPos(this.fallingTetro.rotateBy())) {
+        if (!isValidPos(this.fallingTetro.rotateBy(clockwise))) {
             return false;
         }
-        this.fallingTetro = this.fallingTetro.rotateBy();
+        this.fallingTetro = this.fallingTetro.rotateBy(clockwise);
         return true;
     }
 

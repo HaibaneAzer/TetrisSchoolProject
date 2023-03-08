@@ -56,9 +56,14 @@ public class TetrisController implements KeyListener{
             }
         }
         else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            this.controllModel.rotateTetromino();
-            
             // Up arrow was e
+            this.controllModel.rotateTetromino(true);
+
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+            // CTRL was e
+            this.controllModel.rotateTetromino(false);
+
         }
         else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             this.controllModel.dropTetromino();
@@ -66,7 +71,7 @@ public class TetrisController implements KeyListener{
             // Spacebar was e
         }
         this.tView.repaint();
-
+        
     }
 
     @Override
