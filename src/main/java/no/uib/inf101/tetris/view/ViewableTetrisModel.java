@@ -38,4 +38,20 @@ public interface ViewableTetrisModel {
      * @return GameState-object.
      */
     GameState getGameState();
+
+    /**
+     * getCurrentScore is getter for score
+     * calculated from number of rows removed. 
+     * @return current score as int
+     */
+    int getCurrentScore();
+
+    /**
+     * getCurrentLevel is getter for what level the player is at.
+     * calculated using rows removed.
+     * @return current level as int
+     */
+    int getCurrentLevel();
+
+
 }

@@ -13,14 +13,18 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     private final TetrominoFactory tetroMaker;
     private Tetromino fallingTetro; 
     private GameState gameStatus;
-    private int totalScore;
+    private int tetrisLevel;
+    private int totalRemovedRows;
+    private int score;
 
     public TetrisModel(TetrisBoard Board, TetrominoFactory tetroMaker) {
         this.Board = Board;
         this.tetroMaker = tetroMaker;
         this.fallingTetro = tetroMaker.getNext().shiftedToTopCenterOf(Board);
         this.gameStatus = GameState.ACTIVE_GAME;
-        this.totalScore = 0;
+        this.score = 0;
+        this.totalRemovedRows = 0;
+        this.tetrisLevel = 1;
     }
 
     @Override
@@ -43,9 +47,33 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
         return this.gameStatus;
     }
 
+
     @Override
     public int getTimePerTick() {
-        return 1000;
+        int timeDelay = 1000;
+        if (this.totalRemovedRows >= 15) {
+            timeDelay = 300;
+            this.tetrisLevel = 4;
+        }
+        else if (this.totalRemovedRows > 10) {
+            timeDelay = 500;
+            this.tetrisLevel = 3;
+        }
+        else if (this.totalRemovedRows > 5) {
+            timeDelay = 700;
+            this.tetrisLevel = 2;
+        }
+        return timeDelay;
+    }
+
+    @Override
+    public int getCurrentScore() {
+        return this.score;
+    }
+
+    @Override
+    public int getCurrentLevel() {
+        return this.tetrisLevel;
     }
 
     @Override
@@ -143,10 +171,25 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
             }
         }
         // check if rows are full
-        int score = this.Board.removeFullRows();
-        if (score != 0) {
-            this.totalScore += this.Board.cols()*score;
-            System.out.println(this.totalScore);
+        int removedRows = this.Board.removeFullRows();
+        this.totalRemovedRows += removedRows;
+        if (removedRows != 0) {
+            // score calculation:
+            if (removedRows == 4) {
+                this.score += 800;
+            }
+            else if (removedRows == 3) {
+                this.score += 500;
+            }
+            else if (removedRows == 2) {
+                this.score += 300;
+            }
+            else if (removedRows == 1) {
+                this.score += 100;
+            }
+
+            removedRows = 0;
+            
         }
         // get new tetromino
         getNextTetromino();

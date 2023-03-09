@@ -31,6 +31,15 @@ public interface ColorTheme {
     Color getBackgroundColor();
 
 /**
+ * getScoreBoardColor has parameter of type string and returns values of type Color.
+ * valid inputs are "back"; corrosponds to color dark gray, and "score"; corrosponds to
+ * color white.
+ * @param C is of type string
+ * @return a not-null value of type Color
+ */
+    Color getScoreBoardColor(String C);
+
+/**
  * getGameOverColor has parameter of type String and returns values of type Color.
  * valid inputs are "front"; which corrosponds to color White, and "back"; which corrosponds
  * to a transparent color.
@@ -38,4 +47,13 @@ public interface ColorTheme {
  * @return a not-null value of type Color
  */
     Color getGameOverColor(String C);
+
+/**
+ * getLevelBoardColor has parameter of type string and returns values of type Color.
+ * valid inputs are "back"; corrosponds to color dark gray, and "level"; corrosponds to
+ * color white.
+ * @param C is of type string
+ * @return a not-null value of type Color
+ */
+    Color getLevelBoardColor(String C);
 }

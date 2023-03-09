@@ -23,7 +23,7 @@ public class TetrisController implements KeyListener{
         this.tView = tView;
         this.tTimer = new Timer(controllModel.getTimePerTick(), this::clockTick);
         this.music = new TetrisSong("tetris.midi");
-
+        
         // key input
         this.tView.setFocusable(true);
         this.tView.addKeyListener(this);
@@ -81,9 +81,10 @@ public class TetrisController implements KeyListener{
     public void keyTyped(KeyEvent e) {/* Ignore */}
 
     public void clockTick(ActionEvent e) {
-
+        
         if (controllModel.getGameState().equals(GameState.ACTIVE_GAME)) {
             controllModel.clockTick();
+            getTimerDelay();
             this.tView.repaint();
         }
         else {
@@ -94,10 +95,11 @@ public class TetrisController implements KeyListener{
         }
     }
     // bonus oppg:
-   /*  private void getTimerDelay() {
+    private void getTimerDelay() {
         // set new delay for timer
-        this.tTimer.setDelay(controllModel.getTimePerTick());
-        this.tTimer.setInitialDelay(controllModel.getTimePerTick());
+        int newDelay = controllModel.getTimePerTick();
+        this.tTimer.setDelay(newDelay);
+        this.tTimer.setInitialDelay(newDelay);
 
-    } */
+    }
 }
