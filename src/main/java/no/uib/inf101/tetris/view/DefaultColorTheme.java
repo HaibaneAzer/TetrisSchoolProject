@@ -18,7 +18,7 @@ public class DefaultColorTheme implements ColorTheme {
             case 'J' -> Color.BLUE.darker();
             case 'S' -> Color.GREEN;
             case 'Z' -> Color.RED;
-            case 'T' -> Color.MAGENTA.darker();
+            case 'T' -> Color.MAGENTA;
             case 'I' -> Color.CYAN;
             case 'O' -> Color.YELLOW;
             default -> throw new IllegalArgumentException("No available color for '" + C + "'");
