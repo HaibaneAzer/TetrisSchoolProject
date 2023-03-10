@@ -23,7 +23,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
         this.Board = Board;
         this.tetroMaker = tetroMaker;
         this.fallingTetro = tetroMaker.getNext().shiftedToTopCenterOf(Board);
-        this.gameStatus = GameState.ACTIVE_GAME;
+        this.gameStatus = GameState.GAME_MENU;
         this.score = 0;
         this.totalRemovedRows = 0;
         this.tetrisLevel = 1;
@@ -35,6 +35,11 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     @Override
     public GridDimension getDimension() {
         return this.Board;
+    }
+
+    @Override
+    public TetrominoFactory getTetrominoFactory() {
+        return this.tetroMaker;
     }
 
     @Override
@@ -52,10 +57,25 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
         return this.gameStatus;
     }
 
+    @Override
+    public GameState setGameState(GameState status) {
+        this.gameStatus = status;
+        return this.gameStatus;
+    }
+
+    @Override
+    public void resetBoard() {
+        this.Board = new TetrisBoard(this.Board.rows(), this.Board.cols());
+        this.score = 0;
+        this.totalRemovedRows = 0;
+        this.tetrisLevel = 1;
+        this.levelChecker[0] = 4; // rows for level up
+        this.levelChecker[1] = 8; // rows for next level up
+        this.timeDelay = 1000; // default delay per tick
+    }
 
     @Override
     public int getTimePerTick() {
-        
         
         if (this.totalRemovedRows >= this.levelChecker[0]) {
             this.tetrisLevel++;
@@ -69,7 +89,6 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
                 this.levelChecker[1] = this.levelChecker[0] + 10;
             }
         }
-        
         return timeDelay;
     }
 
@@ -160,7 +179,7 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
 
         this.fallingTetro = tetroMaker.getNext().shiftedToTopCenterOf(Board);
         if (!isValidPos(this.fallingTetro)) {
-            this.gameStatus = GameState.GAME_OVER;
+            setGameState(GameState.GAME_OVER);
         }
     }
 

@@ -39,6 +39,21 @@ public interface ControllableTetrisModel {
     GameState getGameState();
 
     /**
+     * setGameState changes current game status to
+     * input game status
+     * @param status is of type GameState
+     * @return is of type GameState
+     */
+    GameState setGameState(GameState status);
+
+    /**
+     * resetBoard sets all tiles on board to blank.
+     * Used when player continues after game over.
+     * @return new board
+     */
+    void resetBoard();
+
+    /**
      * getTimePerTick gets milliseconds for every game tick.
      * standard is 1000 (int value) which sets gametick to every second.
      * @return int value representing number of milliseconds per tick.

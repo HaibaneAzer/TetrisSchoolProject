@@ -2,6 +2,7 @@ package no.uib.inf101.tetris.view;
 
 import no.uib.inf101.grid.GridDimension;
 import no.uib.inf101.tetris.model.GameState;
+import no.uib.inf101.tetris.model.tetromino.TetrominoFactory;
 import no.uib.inf101.grid.GridCell;
 
 public interface ViewableTetrisModel {
@@ -13,6 +14,12 @@ public interface ViewableTetrisModel {
     */
     GridDimension getDimension();
 
+    /** 
+    * getTetrominoFactory returns an GridDimension object.
+    * Has no parameters.
+    * @return the TetrominoFactory-object.
+    */
+    TetrominoFactory getTetrominoFactory();
 
     /**
      * getTilesOnBoard returns an object, which when it's  
@@ -38,6 +45,21 @@ public interface ViewableTetrisModel {
      * @return GameState-object.
      */
     GameState getGameState();
+
+    /**
+     * setGameState changes current game status to
+     * input game status
+     * @param status is of type GameState
+     * @return is of type GameState
+     */
+    GameState setGameState(GameState status);
+
+    /**
+     * resetBoard sets all tiles on board to blank.
+     * Used when player continues after game over.
+     * @return new board
+     */
+    void resetBoard();
 
     /**
      * getCurrentScore is getter for score

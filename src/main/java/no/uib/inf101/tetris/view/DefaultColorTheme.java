@@ -60,8 +60,20 @@ public class DefaultColorTheme implements ColorTheme {
     @Override
     public Color getGameOverColor(String C) {
         Color color = switch(C) {
-            case "back" -> new Color(0, 0, 0, 128);
-            case "front" -> Color.decode("#4F0001").brighter().brighter().brighter();
+            case "back" -> new Color(0, 0, 0, 192);
+            case "gameover" -> Color.decode("#4F0001").brighter().brighter().brighter();
+            case "key" -> Color.decode("#4F0001").brighter().brighter().brighter();
+            default -> throw new IllegalArgumentException("No available color for '" + C + "'\nTry 'back' or 'front'.");
+        };
+        return color;
+    }
+
+    @Override
+    public Color getMenuScreenColor(String C) {
+        Color color = switch(C) {
+            case "back" -> Color.BLACK.brighter();
+            case "title" -> Color.WHITE.darker();
+            case "key" -> Color.WHITE.darker();
             default -> throw new IllegalArgumentException("No available color for '" + C + "'\nTry 'back' or 'front'.");
         };
         return color;

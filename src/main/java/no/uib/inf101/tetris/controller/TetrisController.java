@@ -4,6 +4,7 @@ import no.uib.inf101.tetris.midi.TetrisSong;
 import no.uib.inf101.tetris.model.GameState;
 import no.uib.inf101.tetris.view.TetrisView;
 
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.ActionEvent;
@@ -22,12 +23,11 @@ public class TetrisController implements KeyListener{
         this.controllModel = controllModel;
         this.tView = tView;
         this.tTimer = new Timer(controllModel.getTimePerTick(), this::clockTick);
-        this.music = new TetrisSong("tetris.midi");
+        this.music = new TetrisSong("JustTheTwoOfUsMenu.mid");
         
         // key input
         this.tView.setFocusable(true);
         this.tView.addKeyListener(this);
-        this.tTimer.start();
         this.music.run();
 
     }
@@ -35,8 +35,36 @@ public class TetrisController implements KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
         
-        if (controllModel.getGameState().equals(GameState.GAME_OVER)) {
-            /* DO NOTHING */
+        if (controllModel.getGameState().equals(GameState.GAME_MENU)) {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                this.controllModel.setGameState(GameState.ACTIVE_GAME);
+                this.tTimer.start();
+                this.music.doStopMidiSounds();
+                this.music = new TetrisSong("tetris.midi");
+                this.music.run();
+
+            }
+        }
+        else if (controllModel.getGameState().equals(GameState.GAME_OVER)) {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+
+                controllModel.resetBoard();
+                controllModel.setGameState(GameState.ACTIVE_GAME);
+                this.tTimer.restart();
+                this.music.doStopMidiSounds();
+                this.music = new TetrisSong("tetris.midi");
+                this.music.run();
+                
+            } 
+            else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                this.tTimer.stop();
+                controllModel.resetBoard();
+                controllModel.setGameState(GameState.GAME_MENU);
+                this.music.doStopMidiSounds();
+                this.music = new TetrisSong("JustTheTwoOfUsMenu.mid");
+                this.music.run();
+            }
+                
         }
         else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             // Left arrow was e
@@ -82,19 +110,22 @@ public class TetrisController implements KeyListener{
 
     public void clockTick(ActionEvent e) {
         
-        if (controllModel.getGameState().equals(GameState.ACTIVE_GAME)) {
+        if (controllModel.getGameState().equals(GameState.GAME_MENU)) {
+
+        }
+        else if (controllModel.getGameState().equals(GameState.ACTIVE_GAME)) {
             controllModel.clockTick();
             getTimerDelay();
             this.tView.repaint();
         }
-        else {
+        else if (controllModel.getGameState().equals(GameState.GAME_OVER)) {
             this.music.doStopMidiSounds();
             this.music = new TetrisSong("DarkSoulsIIMenu2.mid");
             this.music.run();
             this.tTimer.stop();
         }
     }
-    // bonus oppg:
+    
     private void getTimerDelay() {
         // set new delay for timer
         int newDelay = controllModel.getTimePerTick();

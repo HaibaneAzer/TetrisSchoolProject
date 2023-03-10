@@ -41,12 +41,21 @@ public interface ColorTheme {
 
 /**
  * getGameOverColor has parameter of type String and returns values of type Color.
- * valid inputs are "front"; which corrosponds to color White, and "back"; which corrosponds
- * to a transparent color.
+ * valid inputs are "front"; which corrosponds to color red, and "back"; which corrosponds
+ * to a transparent color and "key"; which corrosponds to color red.
  * @param C is of type String
  * @return a not-null value of type Color
  */
     Color getGameOverColor(String C);
+
+/**
+ * getMenuScreenColor has parameter of type String and returns values of type Color.
+ * valid inputs are "title"; which corrosponds to color White, and "back"; which corrosponds
+ * to color black and "key"; which corrosponds to color white.
+ * @param C is of type String
+ * @return a not-null value of type Color
+ */
+Color getMenuScreenColor(String C);
 
 /**
  * getLevelBoardColor has parameter of type string and returns values of type Color.

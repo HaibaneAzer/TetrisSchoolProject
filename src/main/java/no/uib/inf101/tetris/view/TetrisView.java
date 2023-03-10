@@ -65,6 +65,10 @@ public class TetrisView extends JPanel {
     // rectangle of cells and tetris background
     Rectangle2D drawRectangle = new Rectangle2D.Double(x, y, width, height);
 
+    Rectangle2D drawMenuScreen = new Rectangle2D.Double(0, 0, this.getWidth(), this.getHeight());
+
+    Rectangle2D drawGameOverScreen = new Rectangle2D.Double(0, 0, this.getWidth(), this.getHeight());
+
     double xScore = width + 2*OUTERMARGIN;
     double yScore = y + GRIDMARGIN;
     double widthScore = this.SCOREBOARDWIDTH - 2*OUTERMARGIN;
@@ -75,16 +79,20 @@ public class TetrisView extends JPanel {
 
     CellPositionToPixelConverter Convert = new CellPositionToPixelConverter(drawRectangle, VModel.getDimension(), GRIDMARGIN);
     
-    // draw tetris background
-    drawCells(Canvas, VModel.getTilesOnBoard(), Convert, this.setColor);
-    // draw tetrominos
-    drawCells(Canvas, VModel.getTetroTiles(), Convert, this.setColor);
-    // draw game over screen when a tetromino can't spawn
-    drawEndGameScreen(Canvas, this.getWidth(), this.getHeight(), this.setColor, VModel.getGameState());
-    // draw scores at top-right of screen
-    drawScoreBoard(Canvas, drawScoreRect, this.VModel.getCurrentScore(), this.setColor);
-    // draw level below scoreboard.
-    drawLevelBoard(Canvas, drawLevelRect, this.VModel.getCurrentLevel(), this.setColor);
+    // draw menu screen before game start
+    drawMenuScreen(Canvas, drawMenuScreen, this.setColor, VModel.getGameState());
+    if (!VModel.getGameState().equals(GameState.GAME_MENU)) {
+      // draw tetris background
+      drawCells(Canvas, VModel.getTilesOnBoard(), Convert, this.setColor);
+      // draw tetrominos
+      drawCells(Canvas, VModel.getTetroTiles(), Convert, this.setColor);
+      // draw scores at top-right of screen
+      drawScoreBoard(Canvas, drawScoreRect, this.VModel.getCurrentScore(), this.setColor);
+      // draw level below scoreboard.
+      drawLevelBoard(Canvas, drawLevelRect, this.VModel.getCurrentLevel(), this.setColor);
+      // draw game over screen when a tetromino can't spawn
+      drawEndGameScreen(Canvas, drawGameOverScreen, drawMenuScreen, this.setColor, VModel.getGameState());
+    } 
     
   }  
 
@@ -97,17 +105,48 @@ public class TetrisView extends JPanel {
     }
   }
 
-  private static void drawEndGameScreen(Graphics2D Canvas, int Width, int Height, ColorTheme color, GameState gameStatus) {
+  private static void drawMenuScreen(Graphics2D Canvas, Rectangle2D MenuBackground, ColorTheme color, GameState gameStatus) {
+
+    Rectangle2D title = new Rectangle2D.Double(0, 0.2*MenuBackground.getHeight(), MenuBackground.getWidth(), 100);
+    Rectangle2D pressKey = new Rectangle2D.Double(0, 0.6*MenuBackground.getHeight(), MenuBackground.getWidth(), 60);
+
+    if (gameStatus.equals(GameState.GAME_MENU)) {
+      
+      Canvas.setColor(color.getMenuScreenColor("back"));
+      Canvas.fill(MenuBackground);
+      
+      Canvas.setColor(color.getMenuScreenColor("title"));
+      Canvas.setFont(new Font("Arial", Font.BOLD, 80));
+      Inf101Graphics.drawCenteredString(Canvas, "TETRIS", title);
+
+      Canvas.setColor(color.getMenuScreenColor("key"));
+      Canvas.setFont(new Font("Arial", Font.BOLD, 40));
+      Inf101Graphics.drawCenteredString(Canvas, "Press enter to start", pressKey);
+
+    }
+    
+
+
+  }
+
+  private static void drawEndGameScreen(Graphics2D Canvas, Rectangle2D endGameBackground, Rectangle2D ScreenDimension,ColorTheme color, GameState gameStatus) {
+
+    Rectangle2D pressContinue = new Rectangle2D.Double(0, 0.6*ScreenDimension.getHeight(), ScreenDimension.getWidth(), 30);
+    Rectangle2D pressMenu = new Rectangle2D.Double(0, 0.7*ScreenDimension.getHeight(), ScreenDimension.getWidth(), 30);
 
     if (gameStatus.equals(GameState.GAME_OVER)) {
-      Rectangle2D drawGameOverScreen = new Rectangle2D.Double(0, Math.round(Height/2) - 3*OUTERMARGIN, Width, 69 + OUTERMARGIN);
 
       Canvas.setColor(color.getGameOverColor("back"));
-      Canvas.fill(drawGameOverScreen);
-      Canvas.setColor(color.getGameOverColor("front"));
+      Canvas.fill(endGameBackground);
+      Canvas.setColor(color.getGameOverColor("gameover"));
       Canvas.setFont(new Font("Times New Roman", Font.PLAIN, 69));
 
-      Inf101Graphics.drawCenteredString(Canvas, "YOU DIED", 0, 0, Width, Height);
+      Inf101Graphics.drawCenteredString(Canvas, "YOU DIED", endGameBackground);
+
+      Canvas.setColor(color.getGameOverColor("key"));
+      Canvas.setFont(new Font("Arial", Font.BOLD, 20));
+      Inf101Graphics.drawCenteredString(Canvas, "Continue (enter)", pressContinue);
+      Inf101Graphics.drawCenteredString(Canvas, "Back to Menu (backspace)", pressMenu);
     }
     
   } 
