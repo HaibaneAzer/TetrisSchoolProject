@@ -17,6 +17,8 @@ public class TetrisController implements KeyListener{
     private final TetrisView tView;
     private Timer tTimer;
     private TetrisSong music;
+    private int newDelayMusic; // new music after reaching Delay goal.
+    private final int DELAYGOAL = 700;
 
 
     public TetrisController(ControllableTetrisModel controllModel, TetrisView tView) {
@@ -29,6 +31,7 @@ public class TetrisController implements KeyListener{
         this.tView.setFocusable(true);
         this.tView.addKeyListener(this);
         this.music.run();
+        this.newDelayMusic = DELAYGOAL;
 
     }
 
@@ -42,7 +45,7 @@ public class TetrisController implements KeyListener{
                 this.music.doStopMidiSounds();
                 this.music = new TetrisSong("tetris.midi");
                 this.music.run();
-
+                newDelayMusic = DELAYGOAL;
             }
         }
         else if (controllModel.getGameState().equals(GameState.GAME_OVER)) {
@@ -54,6 +57,7 @@ public class TetrisController implements KeyListener{
                 this.music.doStopMidiSounds();
                 this.music = new TetrisSong("tetris.midi");
                 this.music.run();
+                newDelayMusic = DELAYGOAL;
                 
             } 
             else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
@@ -116,6 +120,13 @@ public class TetrisController implements KeyListener{
         else if (controllModel.getGameState().equals(GameState.ACTIVE_GAME)) {
             controllModel.clockTick();
             getTimerDelay();
+            // change music after drop speed
+            if (controllModel.getTimePerTick() == newDelayMusic) {
+                this.music.doStopMidiSounds();
+                this.music = new TetrisSong("Tetris - A Theme.mid");
+                this.music.run();
+                newDelayMusic = 800;
+            }
             this.tView.repaint();
         }
         else if (controllModel.getGameState().equals(GameState.GAME_OVER)) {

@@ -23,5 +23,6 @@ public class PatternedTetrominoFactory implements TetrominoFactory {
         return nextTetro;
 
     }
+
     
 }

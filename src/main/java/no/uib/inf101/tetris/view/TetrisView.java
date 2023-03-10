@@ -7,7 +7,9 @@ import java.awt.Graphics2D;
 import java.awt.geom.*;
 
 import no.uib.inf101.grid.GridCell;
+import no.uib.inf101.grid.GridDimension;
 import no.uib.inf101.tetris.model.GameState;
+import no.uib.inf101.tetris.model.TetrisBoard;
 
 import javax.swing.JPanel;
 
@@ -55,30 +57,30 @@ public class TetrisView extends JPanel {
 
   // methods drawGame and drawCells used similar solutions from lab 4
   private void drawGame(Graphics2D Canvas) {
+
     double x = OUTERMARGIN;
     double y = OUTERMARGIN;
-
     this.SCOREBOARDWIDTH = WFactor*this.getWidth(); // width of scoreboard
     this.SCOREBOARDHEIGHT = HFactor*this.getHeight(); // height of scoreboard
     double width = (this.getWidth() - this.SCOREBOARDWIDTH) - 2 * OUTERMARGIN;
     double height = this.getHeight() - 2 * OUTERMARGIN;
     // rectangle of cells and tetris background
     Rectangle2D drawRectangle = new Rectangle2D.Double(x, y, width, height);
-
     Rectangle2D drawMenuScreen = new Rectangle2D.Double(0, 0, this.getWidth(), this.getHeight());
-
     Rectangle2D drawGameOverScreen = new Rectangle2D.Double(0, 0, this.getWidth(), this.getHeight());
 
     double xScore = width + 2*OUTERMARGIN;
     double yScore = y + GRIDMARGIN;
     double widthScore = this.SCOREBOARDWIDTH - 2*OUTERMARGIN;
     double heightScore = this.SCOREBOARDHEIGHT - 2*OUTERMARGIN;
-    Rectangle2D drawScoreRect = new Rectangle2D.Double(xScore, yScore, widthScore, heightScore);
 
+    Rectangle2D drawScoreRect = new Rectangle2D.Double(xScore, yScore, widthScore, heightScore);
     Rectangle2D drawLevelRect = new Rectangle2D.Double(xScore, yScore + heightScore + OUTERMARGIN, widthScore, heightScore);
+    Rectangle2D drawNewTetroRect = new Rectangle2D.Double(xScore, yScore + 3*heightScore + OUTERMARGIN, widthScore, 4*heightScore);
+    GridDimension nextTetroGrid = new TetrisBoard(4, 4);
 
     CellPositionToPixelConverter Convert = new CellPositionToPixelConverter(drawRectangle, VModel.getDimension(), GRIDMARGIN);
-    
+    CellPositionToPixelConverter Convert2 = new CellPositionToPixelConverter(drawNewTetroRect, nextTetroGrid, GRIDMARGIN);
     // draw menu screen before game start
     drawMenuScreen(Canvas, drawMenuScreen, this.setColor, VModel.getGameState());
     if (!VModel.getGameState().equals(GameState.GAME_MENU)) {
@@ -90,6 +92,8 @@ public class TetrisView extends JPanel {
       drawScoreBoard(Canvas, drawScoreRect, this.VModel.getCurrentScore(), this.setColor);
       // draw level below scoreboard.
       drawLevelBoard(Canvas, drawLevelRect, this.VModel.getCurrentLevel(), this.setColor);
+      // draw upcoming tetromino
+      drawUpcomingTetromino(Canvas, drawNewTetroRect, VModel.getUpcomingTetroTiles(), Convert2, this.setColor);
       // draw game over screen when a tetromino can't spawn
       drawEndGameScreen(Canvas, drawGameOverScreen, drawMenuScreen, this.setColor, VModel.getGameState());
     } 
@@ -116,7 +120,7 @@ public class TetrisView extends JPanel {
       Canvas.fill(MenuBackground);
       
       Canvas.setColor(color.getMenuScreenColor("title"));
-      Canvas.setFont(new Font("Arial", Font.BOLD, 80));
+      Canvas.setFont(new Font("Arial", Font.BOLD, 100));
       Inf101Graphics.drawCenteredString(Canvas, "TETRIS", title);
 
       Canvas.setColor(color.getMenuScreenColor("key"));
@@ -141,12 +145,12 @@ public class TetrisView extends JPanel {
       Canvas.setColor(color.getGameOverColor("gameover"));
       Canvas.setFont(new Font("Times New Roman", Font.PLAIN, 69));
 
-      Inf101Graphics.drawCenteredString(Canvas, "YOU DIED", endGameBackground);
+      Inf101Graphics.drawCenteredString(Canvas, "GAME OVER", endGameBackground);
 
       Canvas.setColor(color.getGameOverColor("key"));
       Canvas.setFont(new Font("Arial", Font.BOLD, 20));
-      Inf101Graphics.drawCenteredString(Canvas, "Continue (enter)", pressContinue);
-      Inf101Graphics.drawCenteredString(Canvas, "Back to Menu (backspace)", pressMenu);
+      Inf101Graphics.drawCenteredString(Canvas, "Retry? (enter)", pressContinue);
+      Inf101Graphics.drawCenteredString(Canvas, "Go back to menu? (backspace)", pressMenu);
     }
     
   } 
@@ -170,6 +174,14 @@ public class TetrisView extends JPanel {
     Canvas.setFont(new Font("Arial", Font.BOLD, 20));
 
     Inf101Graphics.drawCenteredString(Canvas, "Level: " + String.valueOf(currentLevel), LevelBackground);
+  }
+
+  private static void drawUpcomingTetromino(Graphics2D Canvas, Rectangle2D NewTetroBackground, Iterable<GridCell<Character>> Cells, CellPositionToPixelConverter Converter, ColorTheme color) {
+
+    Canvas.setColor(color.getMenuScreenColor("back"));
+    Canvas.fill(NewTetroBackground);
+    drawCells(Canvas, Cells, Converter, color);
+
   }
   
 }
