@@ -14,6 +14,8 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     private Tetromino fallingTetro; 
     private GameState gameStatus;
     private int tetrisLevel;
+    private int[] levelChecker = new int[2];
+    private int timeDelay;
     private int totalRemovedRows;
     private int score;
 
@@ -25,6 +27,9 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
         this.score = 0;
         this.totalRemovedRows = 0;
         this.tetrisLevel = 1;
+        this.levelChecker[0] = 4; // rows for level up
+        this.levelChecker[1] = 8; // rows for next level up
+        this.timeDelay = 1000; // default delay per tick
     }
 
     @Override
@@ -50,19 +55,21 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
 
     @Override
     public int getTimePerTick() {
-        int timeDelay = 1000;
-        if (this.totalRemovedRows >= 15) {
-            timeDelay = 300;
-            this.tetrisLevel = 4;
+        
+        
+        if (this.totalRemovedRows >= this.levelChecker[0]) {
+            this.tetrisLevel++;
+            if (this.totalRemovedRows < 32) {
+                timeDelay -= 75; // stops at 400 time delay
+                this.levelChecker[0] = this.levelChecker[1];
+                this.levelChecker[1] = this.levelChecker[0] + 4;
+            }
+            else {
+                this.levelChecker[0] = this.levelChecker[1];
+                this.levelChecker[1] = this.levelChecker[0] + 10;
+            }
         }
-        else if (this.totalRemovedRows > 10) {
-            timeDelay = 500;
-            this.tetrisLevel = 3;
-        }
-        else if (this.totalRemovedRows > 5) {
-            timeDelay = 700;
-            this.tetrisLevel = 2;
-        }
+        
         return timeDelay;
     }
 
