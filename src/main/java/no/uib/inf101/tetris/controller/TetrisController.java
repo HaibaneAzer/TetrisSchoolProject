@@ -121,11 +121,11 @@ public class TetrisController implements KeyListener{
             controllModel.clockTick();
             getTimerDelay();
             // change music after drop speed
-            if (controllModel.getTimePerTick() == newDelayMusic) {
+            if (controllModel.getTimePerTick() <= newDelayMusic) {
                 this.music.doStopMidiSounds();
                 this.music = new TetrisSong("Tetris - A Theme.mid");
                 this.music.run();
-                newDelayMusic = 800;
+                newDelayMusic = 0;
             }
             this.tView.repaint();
         }
