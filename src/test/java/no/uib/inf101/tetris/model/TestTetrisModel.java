@@ -18,6 +18,17 @@ import no.uib.inf101.tetris.controller.ControllableTetrisModel;
 
 public class TestTetrisModel {
     
+    private TetrisBoard getTetrisBoardWithContents(String[] StringToBoard) {
+        TetrisBoard board = new TetrisBoard(StringToBoard.length, StringToBoard[0].length());
+        
+        for (int row = 0; row < StringToBoard.length; row++) {
+            for (int col = 0; col < StringToBoard[row].length(); col++) {
+                board.set(new CellPosition(row, col), StringToBoard[row].charAt(col));
+            }
+        }
+        return board;
+    }
+
     @Test
     public void initialPositionOfO() {
         TetrisBoard board = new TetrisBoard(20, 10);
@@ -163,27 +174,29 @@ public class TestTetrisModel {
 
     @Test
     public void testFailedRotation() {
-        int row = 20;
-        int col = 10;
-        TetrisBoard board = new TetrisBoard(row, col);
-        TetrominoFactory factory = new PatternedTetrominoFactory("S");
+        TetrisBoard board = getTetrisBoardWithContents(new String[] {
+            "-----",
+            "-----",
+            "-----",
+            "rrrrr",
+            "r---r",
+            "r-rrr"
+            
+        });
+        TetrominoFactory factory = new PatternedTetrominoFactory("L");
         ControllableTetrisModel model = new TetrisModel(board, factory);
 
-        // colored edges
-        board.set(new CellPosition(0, 0), 'g');
-        board.set(new CellPosition(0, col - 1), 'y');
-        board.set(new CellPosition(row - 1, 0), 'r');
-        board.set(new CellPosition(row - 1, col - 1), 'b');
-
-        model.moveTetromino(0, 2);
+        model.moveTetromino(4, 0);
     
-        // rotation should return false since T block cant rotate out of board.
+        // rotation should return false since L block is enclosed and superRotation has
+        // no available moves
         assertFalse(model.rotateTetromino(true));
 
-        model.moveTetromino(1, 1);
+        model.moveTetromino(-3, 0);
         model.rotateTetromino(true);
-        // rotation should return false since T block cant rotate into yellow corner
-        assertFalse(model.rotateTetromino(true));
+        model.rotateTetromino(true);
+        // rotation should return true since super rotation will move it up
+        assertTrue(model.rotateTetromino(true));
 
         ViewableTetrisModel model2 = (ViewableTetrisModel) model;
 
@@ -193,10 +206,10 @@ public class TestTetrisModel {
         }
         
         // check position is within bounds and outside colored tile to the right
-        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(0, 7), 'S')));
-        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(1, 7), 'S')));
-        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(1, 8), 'S')));
-        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(2, 8), 'S')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(0, 2), 'L')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(1, 2), 'L')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(2, 2), 'L')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(2, 3), 'L')));
 
     }
 
@@ -283,5 +296,63 @@ public class TestTetrisModel {
         assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(18, 5), 'T')));
         assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(18, 6), 'T')));
         assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(19, 5), 'T')));
+    }
+
+    @Test
+    public void testSuperRotationSuccessOfJ() {
+
+        TetrisBoard board = getTetrisBoardWithContents(new String[] {
+            "----------",
+            "----rr----",
+            "-----rrr--",
+            "------rrrr",
+            "-rrr---rrr",
+            "rr----rrrr",
+            "rrrr--rrrr",
+            "rrrr--rrrr"
+        });
+        TetrominoFactory factory = new PatternedTetrominoFactory("J");
+        ControllableTetrisModel model = new TetrisModel(board, factory);
+        // check if final position is available
+        model.moveTetromino(1, -3);
+        model.rotateTetromino(true);
+        assertTrue(model.moveTetromino(4, 3));
+        model.moveTetromino(-4, -3);
+        model.rotateTetromino(false);
+
+        // set starting position
+        assertTrue(model.rotateTetromino(true));
+        assertTrue(model.rotateTetromino(true));
+        assertTrue(model.moveTetromino(2, 2));
+        
+        ViewableTetrisModel model2 = (ViewableTetrisModel) model;
+        List<GridCell<Character>> tetroCells = new ArrayList<>();
+        for (GridCell<Character> gc : model2.getTetroTiles()) {
+            tetroCells.add(gc);
+        }
+
+        // check if block is correctly positioned
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(2, 3), 'J')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(3, 3), 'J')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(3, 4), 'J')));
+        assertTrue(tetroCells.contains(new GridCell<>(new CellPosition(3, 5), 'J')));
+
+        // test super rotation
+        assertTrue(model.rotateTetromino(false));
+        // desired rotation is 0>>3
+        
+        ViewableTetrisModel model3 = (ViewableTetrisModel) model;
+        List<GridCell<Character>> tetroCells2 = new ArrayList<>();
+        for (GridCell<Character> gc : model3.getTetroTiles()) {
+            tetroCells2.add(gc);
+        }
+    
+        // check if block is correctly positioned
+        assertTrue(tetroCells2.contains(new GridCell<>(new CellPosition(4, 5), 'J')));
+        assertTrue(tetroCells2.contains(new GridCell<>(new CellPosition(5, 5), 'J')));
+        assertTrue(tetroCells2.contains(new GridCell<>(new CellPosition(6, 5), 'J')));
+        assertTrue(tetroCells2.contains(new GridCell<>(new CellPosition(6, 4), 'J')));
+        
+
     }
 }

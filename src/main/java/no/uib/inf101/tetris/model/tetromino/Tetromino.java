@@ -79,6 +79,70 @@ public final class Tetromino implements Iterable<GridCell<Character>>{
     }
 
     /**
+     * getter for tetromino spawn shape. Valid chars are "LJSZTIO".
+     * @return boolean[][]
+     */
+    public Tetromino getSpawnShape(Character C) {
+        Tetromino TetrominoBlock = switch(C) {
+            case 'L' -> new Tetromino(C, new boolean[][] {
+                { false, false, false },
+                {  true,  true,  true },
+                {  true, false, false }
+            }, new CellPosition(this.Pos.row(), this.Pos.col()));
+            case 'J' -> new Tetromino(C, new boolean[][] {
+                { false, false, false },
+                {  true,  true,  true },
+                { false, false,  true }
+            }, new CellPosition(this.Pos.row(), this.Pos.col()));
+            case 'S' -> new Tetromino(C, new boolean[][] {
+                { false, false, false },
+                { false,  true,  true },
+                {  true,  true, false }
+            }, new CellPosition(this.Pos.row(), this.Pos.col()));
+            case 'Z' -> new Tetromino(C, new boolean[][] {
+                { false, false, false },
+                {  true,  true, false },
+                { false,  true,  true }
+            }, new CellPosition(this.Pos.row(), this.Pos.col()));
+            case 'T' -> new Tetromino(C, new boolean[][] {
+                { false, false, false },
+                {  true,  true,  true },
+                { false,  true, false }
+            }, new CellPosition(this.Pos.row(), this.Pos.col()));
+            case 'I' -> new Tetromino(C, new boolean[][] {
+                { false, false, false, false},
+                {  true,  true,  true,  true},
+                { false, false, false, false},
+                { false, false, false, false}
+            }, new CellPosition(this.Pos.row(), this.Pos.col()));
+            case 'O' -> new Tetromino(C, new boolean[][] {
+                { false, false, false, false},
+                { false,  true,  true, false},
+                { false,  true,  true, false},
+                { false, false, false, false}
+            }, new CellPosition(this.Pos.row(), this.Pos.col()));
+            default -> throw new IllegalArgumentException("Value '" + C + "' does not match one of the seven Characters");
+        };
+        return TetrominoBlock;
+    }
+
+    /**
+     * getter for tetromino shape
+     * @return boolean[][]
+     */
+    public boolean[][] getShape() {
+        return this.blockShape;
+    }
+
+    /**
+     * getter for tetromino type
+     * @return Character
+     */
+    public Character getType() {
+        return this.blockType;
+    }
+
+    /**
      * shiftedBy creates a copy of an existing tetromino and shifts its CellPosition values relative
      * to it's current position. Returns a new shifted copy of the given tetromino
      * @param deltaRow number of rows to be shifted
@@ -117,7 +181,7 @@ public final class Tetromino implements Iterable<GridCell<Character>>{
     public Tetromino rotateBy(boolean clockwise) {
         // default true if value is not boolean.
         if (!(clockwise == true || clockwise == false)) {
-            clockwise = true;
+            throw new IllegalArgumentException("Input " + clockwise + " is not valid.\n Try 'true' or 'false'.");
         }
         int sideLength = this.blockShape.length;
         // old point coordinates

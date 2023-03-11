@@ -20,6 +20,44 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     private int timeDelay;
     private int totalRemovedRows;
     private int score;
+    private static final int WALLKICK_NORMAL[][][] = 
+    {
+        {{0, -1}, {-1, -1}, {2, 0}, {2, -1}},
+    // 0>>R
+        {{0, 1}, {1, 1}, {-2, 0}, {-2, 1}},
+    // R>>0
+        {{0, 1}, {1, 1}, {-2, 0}, {-2, 1}},
+    // R>>2
+        {{0, -1}, {-1, -1}, {2, 0}, {2, -1}},
+    // 2>>R
+        {{0, 1}, {-1, 1}, {2, 0}, {2, 1}},
+    // 2>>L
+        {{0, -1}, {1, -1}, {-2, 0}, {-2, -1}},
+    // L>>2
+        {{0, -1}, {1, -1}, {-2, 0}, {-2, -1}},
+    // L>>0
+        {{0, 1}, {-1, 1}, {2, 0}, {2, 1}},
+    // 0>>L
+    };
+    private static final int WALLKICK_I[][][] = 
+    {
+        {{0, -2}, {0, 1}, {1, -2}, {-1, 2}},
+    // 0>>R
+        {{0, 2}, {0, -1}, {-1, 2}, {2, -1}},
+    // R>>0
+        {{0, -1}, {0, 2}, {-2, -1}, {1, 2}},
+    // R>>2
+        {{0, 1}, {0, -2}, {2, 1}, {1, 1}},
+    // 2>>R
+        {{0, 2}, {0, -1}, {-1, 2}, {1, -1}},
+    // 2>>L
+        {{0, -2}, {0, 1}, {1, -2}, {-2, 1}},
+    // L>>2
+        {{0, 1}, {0, -2}, {2, 1}, {-1, -2}},
+    // L>>0
+        {{0, -1}, {0, 2}, {-2, -1}, {1, 2}},
+    // 0>>L
+    };
 
     public TetrisModel(TetrisBoard Board, TetrominoFactory tetroMaker) {
         this.Board = Board;
@@ -139,15 +177,71 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
 
     }
 
-    // NB: implement super rotation?
     @Override
     public boolean rotateTetromino(boolean clockwise) {
 
         if (!isValidPos(this.fallingTetro.rotateBy(clockwise))) {
-            return false;
+            return superRotationSystem(clockwise);
         }
         this.fallingTetro = this.fallingTetro.rotateBy(clockwise);
         return true;
+    }
+
+    @Override 
+    public boolean superRotateTetromino(int deltaRow, int deltaCol, boolean clockwise) {
+        if (!isValidPos(this.fallingTetro.rotateBy(clockwise).shiftedBy(deltaRow, deltaCol))) {
+            return false;
+        }
+        this.fallingTetro = this.fallingTetro.rotateBy(clockwise).shiftedBy(deltaRow, deltaCol);
+        return true;
+    }
+
+    private boolean superRotationSystem(boolean Rotation) {
+        // initial rotations
+        Tetromino spawn = this.fallingTetro.getSpawnShape(this.fallingTetro.getType());
+        // initial spawn rotation according to Tetris wiki
+        if (!this.fallingTetro.getType().equals('I')) { 
+            spawn = spawn.rotateBy(true).rotateBy(true);
+        }
+        Tetromino Right = spawn.rotateBy(true);
+        Tetromino Right2 = spawn.rotateBy(true).rotateBy(true);
+        Tetromino Left = spawn.rotateBy(false);
+        Tetromino Left2 = spawn.rotateBy(false).rotateBy(false);
+
+        // conditions
+        boolean[] conditions = new boolean[] {
+            (this.fallingTetro.equals(spawn) && this.fallingTetro.rotateBy(Rotation).equals(Right)), // 0->R
+            (this.fallingTetro.equals(Right) && this.fallingTetro.rotateBy(Rotation).equals(spawn)), // R->0
+            (this.fallingTetro.equals(Right) && this.fallingTetro.rotateBy(Rotation).equals(Right2)), // R->2
+            (this.fallingTetro.equals(Right2) && this.fallingTetro.rotateBy(Rotation).equals(Right)), // 2->R
+            (this.fallingTetro.equals(Left2) && this.fallingTetro.rotateBy(Rotation).equals(Left)), // 2->L
+            (this.fallingTetro.equals(Left) && this.fallingTetro.rotateBy(Rotation).equals(Left2)), // L->2
+            (this.fallingTetro.equals(Left) && this.fallingTetro.rotateBy(Rotation).equals(spawn)), // L->0
+            (this.fallingTetro.equals(spawn) && this.fallingTetro.rotateBy(Rotation).equals(Left)) // 0->L
+        };
+        if (this.fallingTetro.getType().equals('I')) {
+            for (int state = 0; state < conditions.length; state++) {
+                if (conditions[state]) {
+                    for (int test = 0; test < WALLKICK_I[0].length; test++) {
+                        if (superRotateTetromino(WALLKICK_I[state][test][0],WALLKICK_I[state][test][1], Rotation)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        else if (!this.fallingTetro.getType().equals('O')) {
+            for (int state = 0; state < conditions.length; state++) {
+                if (conditions[state]) {
+                    for (int test = 0; test < WALLKICK_NORMAL[0].length; test++) {
+                        if (superRotateTetromino(WALLKICK_NORMAL[state][test][0],WALLKICK_NORMAL[state][test][1], Rotation)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     @Override

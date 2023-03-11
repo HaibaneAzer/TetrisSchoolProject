@@ -9,7 +9,7 @@ public interface ControllableTetrisModel {
      * @param deltaRow is number of rows to move.
      * @param deltaCol is number of columns to move.
      * @return true if movement was successful. 
-     * returns false if tiles are obstructed or spot is out of bounds
+     * @return false if tiles are obstructed or spot is out of bounds.
      * 
      */
     boolean moveTetromino(int deltaRow, int deltaCol);
@@ -18,10 +18,19 @@ public interface ControllableTetrisModel {
      * rotateTetromino is used to rotate a tetromino-object clock-wise at its current posistion.
      * @param clockwise is true, false is counter-clockwise
      * @return true if rotation was successful. 
-     * returns false if tiles are obstructed or spot is out of bounds
+     * @return false if tiles are obstructed or spot is out of bounds.
      */
     boolean rotateTetromino(boolean clockwise);
 
+    /**
+     * superRotateTetromino is used to rotate and shift the tetromino-object position if possible.
+     * Used by the superRotationSystem (SRS) to peform wallkicks.
+     * @param deltaRow number of rows to move.
+     * @param deltaCol number of cols to move.
+     * @param clockwise is true, counter-clockwise is false.
+     * @return false if tiles are obstructed or spot is out of bounds.
+     */
+    boolean superRotateTetromino(int deltaRow, int deltaCol, boolean clockwise);
 
     /**
      * dropTetromino is used to move a tetromino-object down until moveTetromino method returns false,
