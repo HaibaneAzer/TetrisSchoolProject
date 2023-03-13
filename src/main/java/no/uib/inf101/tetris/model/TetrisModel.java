@@ -196,6 +196,34 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
         return true;
     }
 
+    /**
+     * Helper method for superRotationSystem method. Used to go through wallkick tests for tetrominos.
+     * @param conditions is a list of criteria (boolean statements) the given tetromino-object must fulfill.
+     * @param WALLKICK is a list of movements (int valued) used on {@link #superRotateTetromino}, for each lists of tests, for each lists of positions
+     * a given tetromino-object can have.
+     * @param Rotation is the second argument used on {@link #superRotateTetromino}. 
+     * Can either be clockwise (boolean true) or counter-clockwise (boolean false)
+     * @return returns true if method {@link #superRotateTetromino} succeeded, false otherwise.
+     */
+    private boolean superConditionChecker(boolean[] conditions, int[][][] WALLKICK, boolean Rotation) {
+        for (int state = 0; state < conditions.length; state++) {
+            if (conditions[state]) {
+                for (int test = 0; test < WALLKICK[0].length; test++) {
+                    if (superRotateTetromino(WALLKICK[state][test][0],WALLKICK[state][test][1], Rotation)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * superRotationSystem (SRS) is the helper method used by {@link #rotateTetromino}.
+     * after a regular rotation has failed, checks if a Wallkick can be performed.
+     * @param Rotation is the same boolean argument used in {@link #rotateTetromino}. 
+     * @return result of {@link #superConditionChecker}. If tetromino is of type 'O', return false.
+     */
     private boolean superRotationSystem(boolean Rotation) {
         // initial rotations
         Tetromino spawn = this.fallingTetro.getSpawnShape(this.fallingTetro.getType());
@@ -220,26 +248,10 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
             (this.fallingTetro.equals(spawn) && this.fallingTetro.rotateBy(Rotation).equals(Left)) // 0->L
         };
         if (this.fallingTetro.getType().equals('I')) {
-            for (int state = 0; state < conditions.length; state++) {
-                if (conditions[state]) {
-                    for (int test = 0; test < WALLKICK_I[0].length; test++) {
-                        if (superRotateTetromino(WALLKICK_I[state][test][0],WALLKICK_I[state][test][1], Rotation)) {
-                            return true;
-                        }
-                    }
-                }
-            }
+            return superConditionChecker(conditions, WALLKICK_I, Rotation);
         }
         else if (!this.fallingTetro.getType().equals('O')) {
-            for (int state = 0; state < conditions.length; state++) {
-                if (conditions[state]) {
-                    for (int test = 0; test < WALLKICK_NORMAL[0].length; test++) {
-                        if (superRotateTetromino(WALLKICK_NORMAL[state][test][0],WALLKICK_NORMAL[state][test][1], Rotation)) {
-                            return true;
-                        }
-                    }
-                }
-            }
+            return superConditionChecker(conditions, WALLKICK_NORMAL, Rotation);
         }
         return false;
     }
