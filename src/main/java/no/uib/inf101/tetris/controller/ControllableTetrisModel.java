@@ -58,7 +58,7 @@ public interface ControllableTetrisModel {
     /**
      * resetBoard sets all tiles on board to blank.
      * Used when player continues after game over.
-     * @return new board
+     * @return new board.
      */
     void resetBoard();
 

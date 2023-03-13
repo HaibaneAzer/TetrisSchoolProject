@@ -9,13 +9,11 @@ public class RandomTetrominoFactory implements TetrominoFactory{
 
     @Override
     public Tetromino getNext() {
-
         randomChar = new Random();
         Character Char = BlockShapes.charAt(randomChar.nextInt(BlockShapes.length()));
-
         Tetromino nextTetro = Tetromino.newTetromino(Char);
-        return nextTetro;
 
+        return nextTetro;
     }
 
 }

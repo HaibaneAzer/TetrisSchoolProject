@@ -12,7 +12,6 @@ import javax.swing.Timer;
 
 public class TetrisController implements KeyListener{
     
-    // Instance variables
     private final ControllableTetrisModel controllModel;
     private final TetrisView tView;
     private Timer tTimer;
@@ -37,7 +36,6 @@ public class TetrisController implements KeyListener{
 
     @Override
     public void keyPressed(KeyEvent e) {
-        
         if (controllModel.getGameState().equals(GameState.GAME_MENU)) {
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                 this.controllModel.setGameState(GameState.ACTIVE_GAME);
@@ -103,7 +101,6 @@ public class TetrisController implements KeyListener{
             // Spacebar was e
         }
         this.tView.repaint();
-        
     }
 
     @Override
@@ -142,6 +139,6 @@ public class TetrisController implements KeyListener{
         int newDelay = controllModel.getTimePerTick();
         this.tTimer.setDelay(newDelay);
         this.tTimer.setInitialDelay(newDelay);
-
     }
+    
 }

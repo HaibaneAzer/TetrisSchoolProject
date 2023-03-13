@@ -13,22 +13,57 @@ import java.util.Iterator;
 
 public final class Tetromino implements Iterable<GridCell<Character>>{
 
-    // Instance variables
     Character blockType;
     boolean[][] blockShape;
+    boolean[][][] blockshapelist = {{
+        { false, false, false },
+        {  true,  true,  true },
+        {  true, false, false }
+    },
+    {
+        { false, false, false },
+        {  true,  true,  true },
+        { false, false,  true }
+    },
+    {
+        { false, false, false },
+        { false,  true,  true },
+        {  true,  true, false }
+    },
+    {
+        { false, false, false },
+        {  true,  true, false },
+        { false,  true,  true }
+    },
+    {
+        { false, false, false },
+        {  true,  true,  true },
+        { false,  true, false }
+    },
+    {
+        { false, false, false, false},
+        {  true,  true,  true,  true},
+        { false, false, false, false},
+        { false, false, false, false}
+    },
+    {
+        { false, false, false, false},
+        { false,  true,  true, false},
+        { false,  true,  true, false},
+        { false, false, false, false}
+    }};
     private CellPosition Pos;
-
     List<GridCell<Character>> BlockList = new ArrayList<GridCell<Character>>();
 
     private Tetromino(Character blockType, boolean[][] blockShape, CellPosition Pos) {
         this.blockType = blockType;
         this.blockShape = blockShape;
         this.Pos = Pos;
-
+        
     }
 
     /** 
-     * newTetromino is a standard static (package-private) method which contains a list of valid tetromino shapes to be returned when
+     * newTetromino is a package-private method which contains a list of valid tetromino shapes to be returned when
      * given a valid char type value. Valid Chars are "LJSZTIO".
      * @param newBlockType value of type Char.
      * @return a tetromino block of any valid shape.
@@ -79,59 +114,21 @@ public final class Tetromino implements Iterable<GridCell<Character>>{
     }
 
     /**
-     * getter for tetromino spawn shape. Valid chars are "LJSZTIO".
+     * getter for tetromino spawn shape. Used in SRS for checking Wallkicks. Valid chars are "LJSZTIO".
      * @return boolean[][]
      */
     public Tetromino getSpawnShape(Character C) {
         Tetromino TetrominoBlock = switch(C) {
-            case 'L' -> new Tetromino(C, new boolean[][] {
-                { false, false, false },
-                {  true,  true,  true },
-                {  true, false, false }
-            }, new CellPosition(this.Pos.row(), this.Pos.col()));
-            case 'J' -> new Tetromino(C, new boolean[][] {
-                { false, false, false },
-                {  true,  true,  true },
-                { false, false,  true }
-            }, new CellPosition(this.Pos.row(), this.Pos.col()));
-            case 'S' -> new Tetromino(C, new boolean[][] {
-                { false, false, false },
-                { false,  true,  true },
-                {  true,  true, false }
-            }, new CellPosition(this.Pos.row(), this.Pos.col()));
-            case 'Z' -> new Tetromino(C, new boolean[][] {
-                { false, false, false },
-                {  true,  true, false },
-                { false,  true,  true }
-            }, new CellPosition(this.Pos.row(), this.Pos.col()));
-            case 'T' -> new Tetromino(C, new boolean[][] {
-                { false, false, false },
-                {  true,  true,  true },
-                { false,  true, false }
-            }, new CellPosition(this.Pos.row(), this.Pos.col()));
-            case 'I' -> new Tetromino(C, new boolean[][] {
-                { false, false, false, false},
-                {  true,  true,  true,  true},
-                { false, false, false, false},
-                { false, false, false, false}
-            }, new CellPosition(this.Pos.row(), this.Pos.col()));
-            case 'O' -> new Tetromino(C, new boolean[][] {
-                { false, false, false, false},
-                { false,  true,  true, false},
-                { false,  true,  true, false},
-                { false, false, false, false}
-            }, new CellPosition(this.Pos.row(), this.Pos.col()));
+            case 'L' -> new Tetromino(C, this.blockshapelist[0], new CellPosition(this.Pos.row(), this.Pos.col()));
+            case 'J' -> new Tetromino(C, this.blockshapelist[1], new CellPosition(this.Pos.row(), this.Pos.col()));
+            case 'S' -> new Tetromino(C, this.blockshapelist[2], new CellPosition(this.Pos.row(), this.Pos.col()));
+            case 'Z' -> new Tetromino(C, this.blockshapelist[3], new CellPosition(this.Pos.row(), this.Pos.col()));
+            case 'T' -> new Tetromino(C, this.blockshapelist[4], new CellPosition(this.Pos.row(), this.Pos.col()));
+            case 'I' -> new Tetromino(C, this.blockshapelist[5], new CellPosition(this.Pos.row(), this.Pos.col()));
+            case 'O' -> new Tetromino(C, this.blockshapelist[6], new CellPosition(this.Pos.row(), this.Pos.col()));
             default -> throw new IllegalArgumentException("Value '" + C + "' does not match one of the seven Characters");
         };
         return TetrominoBlock;
-    }
-
-    /**
-     * getter for tetromino shape
-     * @return boolean[][]
-     */
-    public boolean[][] getShape() {
-        return this.blockShape;
     }
 
     /**

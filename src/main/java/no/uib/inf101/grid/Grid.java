@@ -16,37 +16,29 @@ public class Grid<E> implements IGrid<E>{
     private List<List<GridCell<E>>> Cells = new ArrayList<List<GridCell<E>>>();
     private List<GridCell<E>> CellInfo;
 
-    // constructor 1
     public Grid(int row, int col) {
         this.row = row;
         this.col = col;
-
         for (int i = 0; i < this.row; i++) {
             CellInfo = new ArrayList<>();
             for (int j = 0; j < this.col; j++) {
               CellInfo.add(new GridCell<E>(new CellPosition(i,j), null));
-              
             }
             this.Cells.add(CellInfo);
         }
-
     }
 
-    // constructor 2
     public Grid(int row, int col, E value) {
         this.row = row;
         this.col = col;
         this.value = value;
-
         for (int i = 0; i < this.row; i++) {
             CellInfo = new ArrayList<>();
             for (int j = 0; j < this.col; j++) {
               CellInfo.add(new GridCell<E>(new CellPosition(i,j), this.value));
-              
             }
             this.Cells.add(CellInfo);
         }
-        
     }
 
     // Fikk hjelp av Elias Ruud Aronsen til å finne feil i set metoden.
@@ -71,18 +63,21 @@ public class Grid<E> implements IGrid<E>{
         return pos.row() >= 0 && pos.row() < this.rows()
         && pos.col() >= 0 && pos.col() < this.cols();
     }
+
     /**
      * getter for rows
      */
     public int rows() {
         return this.row;
     }
+
     /**
      * getter for columns
      */
     public int cols() {
         return this.col;
     }
+    
     /**
      * iterator returns a list of cells of given grid. 
      * This list calls .iterator() to convert the list into

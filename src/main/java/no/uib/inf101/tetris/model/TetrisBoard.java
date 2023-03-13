@@ -5,11 +5,15 @@ import no.uib.inf101.grid.Grid;
 
 public class TetrisBoard extends Grid<Character> {
 
-
     public TetrisBoard(int row, int col) {
         super(row, col, '-'); 
     }
 
+    /**
+     * prettyString gets char values of every cellPosition on the Board and creates a 
+     * String.
+     * @return a String representation of a tetrisBoard.
+     */
     public String prettyString() {
         String[] stringRow = new String[this.rows()];
 

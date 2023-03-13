@@ -117,14 +117,13 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
         this.levelChecker[0] = 10; // rows for level up
         this.levelChecker[1] = 20; // rows for next level up
         this.timeDelay = 1000; // default delay per tick
-        this.nextTetromino = this.tetroMaker.getNext(); // update list.
+        this.nextTetromino = this.tetroMaker.getNext(); // update tetromino list.
         this.tetroList[1] = this.fallingTetro;
         this.tetroList[0] = this.nextTetromino;
     }
 
     @Override
     public int getTimePerTick() {
-        
         if (this.totalRemovedRows >= this.levelChecker[0]) {
             this.tetrisLevel++;
             if (this.totalRemovedRows < 70) {
@@ -157,29 +156,24 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
 
     @Override
     public boolean clockTick() {
-        
         if (moveTetromino(1, 0)) {
             return true;
         }
         glueTetrominoToBoard();
         return false;
-        
     }
 
     @Override
     public boolean moveTetromino(int deltaRow, int deltaCol) {
-        
         if (!isValidPos(this.fallingTetro.shiftedBy(deltaRow, deltaCol))) {
             return false;
         }
         this.fallingTetro = this.fallingTetro.shiftedBy(deltaRow, deltaCol);
         return true;
-
     }
 
     @Override
     public boolean rotateTetromino(boolean clockwise) {
-
         if (!isValidPos(this.fallingTetro.rotateBy(clockwise))) {
             return superRotationSystem(clockwise);
         }
@@ -258,7 +252,6 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
 
     @Override
     public boolean dropTetromino() {
-
         while (isValidPos(this.fallingTetro.shiftedBy(1, 0))) {
             moveTetromino(1, 0);
         }
@@ -267,8 +260,16 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     }
     
     // Fikk hjelp av Elias Ruud Aronsen til å finne feil i IsValidPos metoden.
+    /**
+     * isValidPos is a helper method for methods performing transformations like {@link #moveTetromino} and {@link #rotateTetromino}, 
+     * as well as {@link #getNextTetromino} which spawns new tetrominos on the board.
+     * It takes a shifted version of a tetromino-object and checks if
+     * it's CellPosition values is within the Board and/or not overlaping a colored tile.
+     * See {@link #ColoredTileOverlap}.
+     * @param shiftedTetro is a Tetromino-object
+     * @return true if criteria is met, false otherwise.
+     */
     private boolean isValidPos(Tetromino shiftedTetro) {
-        // check on board
         for (GridCell<Character> gc : shiftedTetro) {
             if (!(gc.pos().row() >= 0 && gc.pos().row() < this.Board.rows() &&
                 gc.pos().col() >= 0 && gc.pos().col() < this.Board.cols())) {
@@ -278,6 +279,12 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
         return ColoredTileOverlap(shiftedTetro); 
     }
     
+    /**
+     * ColoredTileOverlap is a helper method used by {@link #isValidPos}.
+     * Checks if Position is empty/not colored.
+     * @param shiftedTetro is a Tetromino-object
+     * @return true if position is empty, false otherwise.
+     */
     private boolean ColoredTileOverlap(Tetromino shiftedTetro) {
         // check overlap
         for (GridCell<Character> gc2 : this.Board) {
@@ -294,11 +301,10 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
 
     /**
      * getNextTetromino spawns a new tetromino-object and checks if it has any legal moves.
-     * If not, set game status to GAME_OVER.
-     * 
+     * If not, set game status to GAME_OVER. 
+     * Also updates the tetromino list, used to display the next tetromino that will spawn.
      */
     private void getNextTetromino() {
-        
         this.fallingTetro = this.nextTetromino.shiftedToTopCenterOf(Board);
         if (!isValidPos(this.fallingTetro)) {
             setGameState(GameState.GAME_OVER);
@@ -312,10 +318,10 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
 
      /** 
       * glueTetrominoToBoard changes the char value on a Board tile to that of the Tetromino-object,
-      * with corrosponding CellPosition.
+      * with corrosponding CellPosition. Uses {@link #getNextTetromino} after all cells has been glued. 
+      * It also counts number of rows being removed and calculates score.
       */
     private void glueTetrominoToBoard() {
-
         for (GridCell<Character> gc : getTetroTiles()) {
             for (GridCell<Character> boardCell : getTilesOnBoard()) {
                 if (boardCell.pos().equals(gc.pos())) {
@@ -340,13 +346,9 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
             else if (removedRows == 1) {
                 this.score += 100;
             }
-
             removedRows = 0;
-            
         }
-        // get new tetromino
         getNextTetromino();
     }
-
 
 }
