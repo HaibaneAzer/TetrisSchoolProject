@@ -18,13 +18,13 @@ public class TetrisView extends JPanel {
     private final ViewableTetrisModel VModel;
     private final ColorTheme setColor;
     private static final double OUTERMARGIN = 15;
-    private static final double GRIDMARGIN = 2;
+    private static final double GRIDMARGIN = 1;
     private double SCOREBOARDWIDTH;
     private static final double WFactor = 0.4;
     private double SCOREBOARDHEIGHT;
     private static final double HFactor = 0.1;
-    private static final int s = 30; // side lengths of cell
-    private static final int m = 5; // margin
+    private static final int s = 35; // side lengths of cell
+    private static final int m = 1; // margin
 
   public TetrisView(ViewableTetrisModel VModel) {
     this.setFocusable(true);
