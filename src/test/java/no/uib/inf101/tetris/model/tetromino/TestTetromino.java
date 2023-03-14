@@ -1,6 +1,5 @@
 package no.uib.inf101.tetris.model.tetromino;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -162,16 +161,6 @@ public class TestTetromino {
         assertTrue(objs1.contains(new GridCell<>(new CellPosition(3, 5), 'I')));
         // see if 4 rotations returns original pos
         assertEquals(tetro1, tetro1.rotateBy(true).rotateBy(true).rotateBy(true).rotateBy(true));
-        // see if blockshape is correct
-        Tetromino tetroRight = Tetromino.newTetromino('I');
-        assertArrayEquals(tetroRight.rotateBy(true).blockShape, 
-            new boolean[][] {
-                {false, false, true, false},
-                {false, false, true, false},
-                {false, false, true, false},
-                {false, false, true, false}
-            }
-        );
 
         // Check if L block is rotated correctly
         assertEquals(4, objs2.size());

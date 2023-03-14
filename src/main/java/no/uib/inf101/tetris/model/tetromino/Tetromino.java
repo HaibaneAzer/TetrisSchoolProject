@@ -13,9 +13,9 @@ import java.util.Iterator;
 
 public final class Tetromino implements Iterable<GridCell<Character>>{
 
-    Character blockType;
-    boolean[][] blockShape;
-    boolean[][][] blockshapelist = {{
+    private Character blockType;
+    private boolean[][] blockShape;
+    private final boolean[][][] blockshapelist = {{
         { false, false, false },
         {  true,  true,  true },
         {  true, false, false }
