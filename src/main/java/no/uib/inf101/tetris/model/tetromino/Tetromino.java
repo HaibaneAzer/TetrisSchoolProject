@@ -18,39 +18,39 @@ public final class Tetromino implements Iterable<GridCell<Character>>{
     private final boolean[][][] blockshapelist = {{
         { false, false, false },
         {  true,  true,  true },
-        {  true, false, false }
+        {  true, false, false } // L block
     },
     {
         { false, false, false },
         {  true,  true,  true },
-        { false, false,  true }
+        { false, false,  true } // J block
     },
     {
         { false, false, false },
         { false,  true,  true },
-        {  true,  true, false }
+        {  true,  true, false } // S block
     },
     {
         { false, false, false },
         {  true,  true, false },
-        { false,  true,  true }
+        { false,  true,  true } // Z block
     },
     {
         { false, false, false },
         {  true,  true,  true },
-        { false,  true, false }
+        { false,  true, false } // T block
     },
     {
         { false, false, false, false},
         {  true,  true,  true,  true},
         { false, false, false, false},
-        { false, false, false, false}
+        { false, false, false, false} // I block
     },
     {
         { false, false, false, false},
         { false,  true,  true, false},
         { false,  true,  true, false},
-        { false, false, false, false}
+        { false, false, false, false} // O block
     }};
     private CellPosition Pos;
     List<GridCell<Character>> BlockList = new ArrayList<GridCell<Character>>();
@@ -115,7 +115,7 @@ public final class Tetromino implements Iterable<GridCell<Character>>{
 
     /**
      * getter for tetromino spawn shape. Used in SRS for checking Wallkicks. Valid chars are "LJSZTIO".
-     * @return boolean[][]
+     * @return Tetromino-object with standard rotation
      */
     public Tetromino getSpawnShape(Character C) {
         Tetromino TetrominoBlock = switch(C) {
