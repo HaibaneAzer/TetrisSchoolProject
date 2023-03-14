@@ -23,7 +23,7 @@ public class TetrisView extends JPanel {
     private static final double WFactor = 0.4;
     private double SCOREBOARDHEIGHT;
     private static final double HFactor = 0.1;
-    private static final int s = 35; // side lengths of cell
+    private static final int s = 40; // side lengths of cell
     private static final int m = 1; // margin
 
   public TetrisView(ViewableTetrisModel VModel) {
