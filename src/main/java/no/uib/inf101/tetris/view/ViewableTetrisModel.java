@@ -54,7 +54,8 @@ public interface ViewableTetrisModel {
     GameState setGameState(GameState status);
 
     /**
-     * resetBoard sets all tiles on board to blank.
+     * resetBoard sets all tiles on board to blank, as well as reseting score, level, 
+     * time delay and the list for current and upcoming tetromino.
      * Used when player continues after game over.
      * @return new board
      */

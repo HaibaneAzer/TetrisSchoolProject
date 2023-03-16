@@ -16,6 +16,11 @@ public class Grid<E> implements IGrid<E>{
     private List<List<GridCell<E>>> Cells = new ArrayList<List<GridCell<E>>>();
     private List<GridCell<E>> CellInfo;
 
+    /**
+     * Creates a grid using 2 int parameters (rows and cols). 
+     * constructor without spesified generic value. 
+     * default value inserted to GridCell is null.
+     */
     public Grid(int row, int col) {
         this.row = row;
         this.col = col;
@@ -28,6 +33,11 @@ public class Grid<E> implements IGrid<E>{
         }
     }
 
+    /**
+     * Creates a grid using 2 int parameters (rows and cols). 
+     * constructor inserts given generic parameter value into every
+     * GridCell CellPosition.
+     */
     public Grid(int row, int col, E value) {
         this.row = row;
         this.col = col;

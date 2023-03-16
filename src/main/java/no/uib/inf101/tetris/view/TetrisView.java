@@ -26,6 +26,11 @@ public class TetrisView extends JPanel {
     private static final int s = 40; // side lengths of cell
     private static final int m = 1; // margin
 
+  /**
+   * TetrisView constructor uses data from tetrisModel to create the graphics of the tetris game
+   * displayed on the window. 
+   * 
+   */
   public TetrisView(ViewableTetrisModel VModel) {
     this.setFocusable(true);
     this.VModel = VModel;

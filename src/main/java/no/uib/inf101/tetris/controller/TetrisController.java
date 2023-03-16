@@ -19,7 +19,12 @@ public class TetrisController implements KeyListener{
     private int newDelayMusic; // new music after reaching Delay goal.
     private final int DELAYGOAL = 700;
 
-
+    /**
+     * TetrisController is a constructor used to controll the tetris game. 
+     * Uses timers to controll tetromino drop speed.
+     * Updates TetrisView by repainting the window for every key clicked or when timer runs.
+     * 
+     */
     public TetrisController(ControllableTetrisModel controllModel, TetrisView tView) {
         this.controllModel = controllModel;
         this.tView = tView;

@@ -5,6 +5,11 @@ import no.uib.inf101.grid.Grid;
 
 public class TetrisBoard extends Grid<Character> {
 
+    /**
+     * TetrisBoard constructor uses 2 int parameters (row and col) to create a grid
+     * filled with char values '-'. 
+     * 
+     */
     public TetrisBoard(int row, int col) {
         super(row, col, '-'); 
     }

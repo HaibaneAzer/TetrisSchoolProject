@@ -59,6 +59,13 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     // 0>>L
     };
 
+    /**
+     * TetrisModel constructor uses tetrisBoard and TetrominoFactory parameters to create 
+     * the logic and functionality of the tetris Game. 
+     * Some includes a list containing current and future tetromino to spawn on the Board, 
+     * Game Status; determining wether tetris Game is ongoing or not, 
+     * Score; calculated using data of rows removed, and more...
+     */
     public TetrisModel(TetrisBoard Board, TetrominoFactory tetroMaker) {
         this.Board = Board;
         this.tetroMaker = tetroMaker;
