@@ -13,6 +13,8 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     private final TetrominoFactory tetroMaker;
     private Tetromino fallingTetro; 
     private Tetromino nextTetromino;
+    private Tetromino nextTetromino2;
+    private Tetromino nextTetromino3;
     private Tetromino[] tetroList;
     private GameState gameStatus;
     private int tetrisLevel;
@@ -70,9 +72,10 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
         this.Board = Board;
         this.tetroMaker = tetroMaker;
         this.fallingTetro = this.tetroMaker.getNext().shiftedToTopCenterOf(Board);
-        this.nextTetromino = this.tetroMaker.getNext();
         this.tetroList = new Tetromino[] {
-            this.nextTetromino,
+            this.nextTetromino3 = this.tetroMaker.getNext(),
+            this.nextTetromino2 = this.tetroMaker.getNext(),
+            this.nextTetromino = this.tetroMaker.getNext(),
             this.fallingTetro
         };
         this.gameStatus = GameState.GAME_MENU;
@@ -90,8 +93,8 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
     }
 
     @Override
-    public Iterable<GridCell<Character>> getUpcomingTetroTiles() {
-        return this.nextTetromino;
+    public Tetromino[] getUpcomingTetroTiles() {
+        return this.tetroList;
     }
 
     @Override
@@ -125,8 +128,12 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
         this.levelChecker[1] = 20; // rows for next level up
         this.timeDelay = 1000; // default delay per tick
         this.nextTetromino = this.tetroMaker.getNext(); // update tetromino list.
-        this.tetroList[1] = this.fallingTetro;
-        this.tetroList[0] = this.nextTetromino;
+        this.nextTetromino2 = this.tetroMaker.getNext();
+        this.nextTetromino3 = this.tetroMaker.getNext();
+        this.tetroList[3] = this.fallingTetro;
+        this.tetroList[2] = this.nextTetromino;
+        this.tetroList[1] = this.nextTetromino2;
+        this.tetroList[0] = this.nextTetromino3;
     }
 
     @Override
@@ -313,14 +320,17 @@ public class TetrisModel implements ViewableTetrisModel, ControllableTetrisModel
      */
     private void getNextTetromino() {
         this.fallingTetro = this.nextTetromino.shiftedToTopCenterOf(Board);
+        this.nextTetromino = this.nextTetromino2;
+        this.nextTetromino2 = this.nextTetromino3;
+        this.nextTetromino3 = this.tetroMaker.getNext();
         if (!isValidPos(this.fallingTetro)) {
             setGameState(GameState.GAME_OVER);
-
         }
-        this.nextTetromino = this.tetroMaker.getNext();
         // update list
-        this.tetroList[1] = this.fallingTetro;
-        this.tetroList[0] = this.nextTetromino;
+        this.tetroList[3] = this.fallingTetro;
+        this.tetroList[2] = this.nextTetromino;
+        this.tetroList[1] = this.nextTetromino2;
+        this.tetroList[0] = this.nextTetromino3;
     }
 
      /** 

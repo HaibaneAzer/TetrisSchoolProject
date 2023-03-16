@@ -65,4 +65,12 @@ Color getMenuScreenColor(String C);
  * @return a not-null value of type Color
  */
     Color getLevelBoardColor(String C);
+
+/**
+ * getTextColor has parameter of type string and returns values of type Color.
+ * Valid inputs are "score", "level" and "newTetro" all corrosponding to color gray.
+ * @param C is of type string
+ * @return a not-null value of type Color
+ */
+    Color getTextColor(String C);
 }

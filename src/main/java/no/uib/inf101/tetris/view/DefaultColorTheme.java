@@ -78,5 +78,16 @@ public class DefaultColorTheme implements ColorTheme {
         };
         return color;
     }
+
+    @Override 
+    public Color getTextColor(String C) {
+        Color color = switch(C) {
+            case "score" -> Color.GRAY;
+            case "level" -> Color.GRAY;
+            case "newTetro" -> Color.GRAY.darker().darker();
+            default -> throw new IllegalArgumentException("No available color for '" + C + "'\nTry 'score', 'level' or 'newTetro'.");
+        };
+        return color;
+    }
     
 }
