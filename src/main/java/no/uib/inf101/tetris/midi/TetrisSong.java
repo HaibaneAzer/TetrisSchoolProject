@@ -16,6 +16,11 @@ public class TetrisSong implements Runnable {
     private String TETRISMUSIC;
     private Sequencer sequencer;
 
+    /**
+     * TetrisSong constructor takes String version of a midi file 
+     * to play it's music. 
+     * Used to change music at the same time the program is running.
+     */
     public TetrisSong(String TETRISMUSIC) {
         this.TETRISMUSIC = TETRISMUSIC;
     } 
