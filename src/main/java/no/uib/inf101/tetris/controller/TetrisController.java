@@ -52,7 +52,6 @@ public class TetrisController implements KeyListener{
         }
         else if (controllModel.getGameState().equals(GameState.GAME_OVER)) {
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-
                 controllModel.resetBoard();
                 controllModel.setGameState(GameState.ACTIVE_GAME);
                 this.tTimer.restart();
@@ -60,7 +59,6 @@ public class TetrisController implements KeyListener{
                 this.music = new TetrisSong("tetris.midi");
                 this.music.run();
                 newDelayMusic = DELAYGOAL;
-                
             } 
             else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
                 this.tTimer.stop();
@@ -69,18 +67,15 @@ public class TetrisController implements KeyListener{
                 this.music.doStopMidiSounds();
                 this.music = new TetrisSong("JustTheTwoOfUsMenu.mid");
                 this.music.run();
-            }
-                
+            }  
         }
         else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             // Left arrow was e
-            this.controllModel.moveTetromino(0, -1);
-            
+            this.controllModel.moveTetromino(0, -1); 
         }
         else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             // Right arrow was e
             this.controllModel.moveTetromino(0, 1);
-            
         }
         else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             // Down arrow was e
@@ -92,12 +87,10 @@ public class TetrisController implements KeyListener{
         else if (e.getKeyCode() == KeyEvent.VK_UP) {
             // Up arrow was e
             this.controllModel.rotateTetromino(true);
-
         }
         else if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
             // CTRL was e
             this.controllModel.rotateTetromino(false);
-
         }
         else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             this.controllModel.dropTetromino();
