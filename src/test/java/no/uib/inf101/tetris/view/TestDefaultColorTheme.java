@@ -17,6 +17,6 @@ public class TestDefaultColorTheme {
         assertEquals(Color.BLACK, colors.getCellColor('-'));
         assertEquals(Color.RED, colors.getCellColor('r'));
         assertThrows(IllegalArgumentException.class, () -> colors.getCellColor('\n'));
-}
+    }
 
 }
